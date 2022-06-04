@@ -42,10 +42,10 @@ uint8_t start(list* l)
 /** Initialize the program and start recording
  * 
  */
-#define START { \
+#define START  \
     list l = make_list(); \
     GLOBAL_LIST = &l; \
-}
+
 
 /** End recording, print all leftovers
  *  
