@@ -21,7 +21,7 @@ typedef struct {
 } list;
 
 
-element* alloc_element(element* prev, element* next, const void* content, size_t size);
+element* _alloc_element(element* prev, element* next, const void* content, size_t size);
 
 list make_list();
 int list_push_back(list* l, const void* content, size_t size);
@@ -30,9 +30,10 @@ int list_pop_back(list* l, void* content, size_t size);
 int list_pop_front(list* l, void* content, size_t size);
 void list_clear(list* l);
 int list_size(list l);
+void list_foreach(void (*cb)(void*));
 
 
-element* alloc_element(element* prev, element* next, const void* content, size_t size) {
+element* _alloc_element(element* prev, element* next, const void* content, size_t size) {
 	element* e = malloc(sizeof(element));
 	void* c = malloc(size);
 	if (!e) {
@@ -66,7 +67,7 @@ list make_list() {
 
 
 int list_push_back(list* l, const void* content, size_t size) {
-	element* e = alloc_element(l->last, NULL, content, size);
+	element* e = _alloc_element(l->last, NULL, content, size);
 	if (!e) {
 		return 1;
 	}
@@ -86,7 +87,7 @@ int list_push_back(list* l, const void* content, size_t size) {
 
 
 int list_push_front(list* l, const void* content, size_t size) {
-	element* e = alloc_element(NULL, l->first, content, size);
+	element* e = _alloc_element(NULL, l->first, content, size);
 	if (!e) {
 		return 1;
 	}
@@ -170,5 +171,13 @@ void list_clear(list* l) {
 int list_size(list l) {
 	return l.e_count;
 }
+
+
+void list_foreach(void (*cb)(void*)) {
+	for (element* p = l.first; p; p = p->next, i++) {
+		cb(p->content);
+	}
+}
+
 
 #endif /*LIST_H*/
