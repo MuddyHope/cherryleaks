@@ -4,6 +4,8 @@
 
 #include <stdlib.h>
 
+#ifndef LIST_H
+#define LIST_H
 
 typedef struct element_ {
 	void* content;
@@ -168,3 +170,5 @@ void list_clear(list* l) {
 int list_size(list l) {
 	return l.e_count;
 }
+
+#endif /*LIST_H*/
