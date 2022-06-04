@@ -18,6 +18,9 @@ typedef struct c_mem_entity
 
 };
 
+#define START 
+#deifne END
+
 #ifdef _cplusplus
 }
 #endif
