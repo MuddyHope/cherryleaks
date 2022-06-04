@@ -19,9 +19,9 @@ typedef struct
 
 }c_mem_entity;
 
-list GLOBAL_LIST = 0;
+list* GLOBAL_LIST = 0;
 
-uint8_t _start(list l)
+uint8_t _start(list* l)
 {
     if(!l)
     {

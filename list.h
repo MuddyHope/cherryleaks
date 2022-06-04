@@ -24,7 +24,7 @@ typedef struct {
 
 element* alloc_element(element* prev, element* next, const void* content, size_t size);
 
-list make_list();
+list* make_list();
 int list_push_back(list* l, const void* content, size_t size);
 int list_push_front(list* l, const void* content, size_t size);
 int list_pop_back(list* l, void* content, size_t size);
@@ -57,12 +57,12 @@ element* alloc_element(element* prev, element* next, const void* content, size_t
 }
 
 
-list make_list() {
+list* make_list() {
 	element* first = NULL;
 	element* last = NULL;
 
 	list list = {first, last, 0};
-	return list;
+	return &list;
 }
 
 
