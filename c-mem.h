@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include "list.h"
 
 #ifndef C_MEM_H
 #define C_MEM_H
@@ -18,11 +19,13 @@ typedef struct c_mem_entity
 
 };
 
+list* global = NULL;
+
 /** Initialize the program and start recording
  * 
  * 
  */
-#define START 
+#define START global = &make_list();
 
 /** End recording, print all leftovers
  * 
