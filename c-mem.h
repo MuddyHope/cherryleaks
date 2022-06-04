@@ -21,6 +21,11 @@ typedef struct
 
 list* GLOBAL_LIST = 0;
 
+/** Check the initialization of a list
+ * 
+ * @param l - new list entity
+ * @return true if list was declared. else false 
+ */
 uint8_t _start(list* l)
 {
     if(!l)
@@ -35,20 +40,17 @@ uint8_t _start(list* l)
 
 /** Initialize the program and start recording
  * 
- * 
  */
 #define START \
     GLOBAL_LIST = make_list();
 
 /** End recording, print all leftovers
- * 
- * 
+ *  
  */
 #define END_PRINT
 
 /** End recording, print all memory data
  *  
- * 
  */
 #define END_PRINT_ALL
 
