@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include "list.h"
+#include "inc/list.h"
+#include "inc/c-mem-defines.h"
 
 #ifndef C_MEM_H
 #define C_MEM_H
