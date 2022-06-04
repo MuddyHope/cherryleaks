@@ -27,7 +27,7 @@ list* GLOBAL_LIST = 0;
  * @param l - new list entity
  * @return true if list was declared. else false 
  */
-uint8_t _start(list* l)
+uint8_t start(list* l)
 {
     if(!l)
     {
@@ -42,8 +42,10 @@ uint8_t _start(list* l)
 /** Initialize the program and start recording
  * 
  */
-#define START \
-    GLOBAL_LIST = make_list();
+#define START { \
+    list l = make_list(); \
+    GLOBAL_LIST = &l; \
+}
 
 /** End recording, print all leftovers
  *  
@@ -56,7 +58,7 @@ uint8_t _start(list* l)
 #define END_PRINT_ALL
 
 
-#define test if(_start(GLOBAL_LIST)) printf("Inside\n")
+#define test if(start(GLOBAL_LIST)) printf("Inside\n")
 #define malloc(n) malloc(n)
 #define realloc(n) realloc(n)
 #define calloc(num, size) calloc(num, size)

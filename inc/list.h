@@ -8,6 +8,7 @@
 #ifndef LIST_H
 #define LIST_H
 
+
 typedef struct element_ {
 	void* content;
 	struct element_* next;
@@ -22,19 +23,19 @@ typedef struct {
 } list;
 
 
-element* _alloc_element(element* prev, element* next, const void* content, size_t size);
+element* allocate_element_(element* prev, element* next, const void* content, size_t size);
 
-list* make_list();
+list make_list();
 int list_push_back(list* l, const void* content, size_t size);
 int list_push_front(list* l, const void* content, size_t size);
 int list_pop_back(list* l, void* content, size_t size);
 int list_pop_front(list* l, void* content, size_t size);
 void list_clear(list* l);
-int list_size(list l);
-void list_foreach(void (*cb)(void*));
+int list_size(list* l);
+void list_foreach(list* l, void (*cb)(void*));
 
 
-element* _alloc_element(element* prev, element* next, const void* content, size_t size) {
+element* allocate_element_(element* prev, element* next, const void* content, size_t size) {
 	element* e = malloc(sizeof(element));
 	void* c = malloc(size);
 	if (!e) {
@@ -58,7 +59,7 @@ element* _alloc_element(element* prev, element* next, const void* content, size_
 }
 
 
-list* make_list() {
+list make_list() {
 	element* first = NULL;
 	element* last = NULL;
 
@@ -68,7 +69,7 @@ list* make_list() {
 
 
 int list_push_back(list* l, const void* content, size_t size) {
-	element* e = _alloc_element(l->last, NULL, content, size);
+	element* e = allocate_element_(l->last, NULL, content, size);
 	if (!e) {
 		return 1;
 	}
@@ -88,7 +89,7 @@ int list_push_back(list* l, const void* content, size_t size) {
 
 
 int list_push_front(list* l, const void* content, size_t size) {
-	element* e = _alloc_element(NULL, l->first, content, size);
+	element* e = allocate_element_(NULL, l->first, content, size);
 	if (!e) {
 		return 1;
 	}
@@ -169,13 +170,13 @@ void list_clear(list* l) {
 }
 
 
-int list_size(list l) {
-	return l.e_count;
+int list_size(list* l) {
+	return l->e_count;
 }
 
 
-void list_foreach(void (*cb)(void*)) {
-	for (element* p = l.first; p; p = p->next) {
+void list_foreach(list* l, void (*cb)(void*)) {
+	for (element* p = l->first; p; p = p->next) {
 		cb(p->content);
 	}
 }
