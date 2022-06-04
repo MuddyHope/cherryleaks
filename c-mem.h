@@ -39,7 +39,6 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
     block.size = amount;
     block.file = file;
     block.line = line;
-
     list_push_back(GLOBAL_LIST, (void*)&block, sizeof(block));
     return alloc_addr;
 }
@@ -66,7 +65,7 @@ uint8_t start(list* l)
  */
 #define START  \
     list l = make_list(); \
-    GLOBAL_LIST = &l; \
+    GLOBAL_LIST = &l; 
 
 
 /** End recording, print all leftovers
