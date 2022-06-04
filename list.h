@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef LIST_H
 #define LIST_H

@@ -2,7 +2,8 @@
 
 int main()
 {
-    malloc(100);
+    START;
+    test;
     printf("Hello World\n");
     return 0;
 }
