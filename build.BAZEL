@@ -1,0 +1,19 @@
+cc_library(
+    name = "list",
+    hdrs = ["list.h"],
+)
+
+cc_library(
+    name = "c-mem",
+    hdrs = ["c-mem.h"],
+    deps = ["list"],
+)
+
+cc_binary(
+    name = "test",
+    srcs = ["testing.c"],
+
+    deps = [
+        "c-mem"
+    ],
+)

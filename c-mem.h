@@ -19,13 +19,15 @@ typedef struct c_mem_entity
 
 };
 
-list* global = NULL;
+
+list* GLOBAL_LIST = NULL;
+
 
 /** Initialize the program and start recording
  * 
  * 
  */
-#define START global = &make_list();
+#define START GLOBAL_LIST = &make_list();\
 
 /** End recording, print all leftovers
  * 
@@ -39,8 +41,15 @@ list* global = NULL;
  */
 #define END_PRINT_ALL
 
+#ifdef START
 
+#define test printf("Inside\n")
+#define malloc(n) malloc(n)
+#define realloc(n) realloc(n)
+#define calloc(num, size) calloc(num, size)
+#define free(addr) free(addr)
 
+#endif
 #ifdef _cplusplus
 }
 #endif
