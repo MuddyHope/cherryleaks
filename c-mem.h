@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#ifndef C_MEM_H
+#define C_MEM_H
+
+
+
 typedef struct c_mem_entity
 {
     void* address;
@@ -11,3 +16,4 @@ typedef struct c_mem_entity
 
 };
 
+#endif /*C_MEM_H*/
