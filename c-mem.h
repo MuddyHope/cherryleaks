@@ -31,10 +31,10 @@ uint8_t _start(list* l)
 {
     if(!l)
     {
-        return 0;
+        return FALSE;
     } else 
     {
-        return 1;
+        return TRUE;
     }
 
 }
