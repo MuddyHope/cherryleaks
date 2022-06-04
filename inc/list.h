@@ -63,7 +63,7 @@ list* make_list() {
 	element* last = NULL;
 
 	list list = {first, last, 0};
-	return &list;
+	return list;
 }
 
 
@@ -172,19 +172,13 @@ void list_clear(list* l) {
 int list_size(list l) {
 	return l.e_count;
 }
-/**
- * 
- * c-memory/inc/list.h:177:20: error: use of undeclared identifier 'l'
-        for (element* p = l.first; p; p = p->next, i++) {
-                          ^
-   c-memory/inc/list.h:177:45: error: use of undeclared identifier 'i'
-        for (element* p = l.first; p; p = p->next, i++) {
- *  
- */
+
+
 void list_foreach(void (*cb)(void*)) {
-	for (element* p = l.first; p; p = p->next, i++) {
+	for (element* p = l.first; p; p = p->next) {
 		cb(p->content);
 	}
 }
-*/
+
+
 #endif /*LIST_H*/
