@@ -18,8 +18,25 @@ typedef struct c_mem_entity
 
 };
 
+/** Initialize the program and start recording
+ * 
+ * 
+ */
 #define START 
-#deifne END
+
+/** End recording, print all leftovers
+ * 
+ * 
+ */
+#define END_PRINT
+
+/** End recording, print all memory data
+ *  
+ * 
+ */
+#define END_PRINT_ALL
+
+
 
 #ifdef _cplusplus
 }
