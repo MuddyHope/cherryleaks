@@ -22,6 +22,28 @@ typedef struct
 
 list* GLOBAL_LIST = 0;
 
+/** Add data to mem-block entity
+ * 
+ * @param amount - amount of bytes to be allocated
+ * @param file  - name of teh file where allocation is done
+ * @param line - line number where allocation is done
+ * @param list - gobal list structure where memory data is stored 
+ * @return pointer to allocated memory
+ */
+void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
+{
+    void* alloc_addr = malloc(amount);
+    c_mem_entity block;
+
+    block.address = alloc_addr;
+    block.size = amount;
+    block.file = file;
+    block.line = line;
+
+    list_push_back(GLOBAL_LIST, (void*)&block, sizeof(block));
+    return alloc_addr;
+}
+
 /** Check the initialization of a list
  * 
  * @param l - new list entity
@@ -59,7 +81,7 @@ uint8_t start(list* l)
 
 
 #define test if(start(GLOBAL_LIST)) printf("Inside\n")
-#define malloc(n) malloc(n)
+#define malloc(n) start(GLOBAL_LIST) ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST) : malloc(n)
 #define realloc(n) realloc(n)
 #define calloc(num, size) calloc(num, size)
 #define free(addr) free(addr)
