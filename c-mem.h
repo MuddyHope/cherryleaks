@@ -10,46 +10,57 @@
 extern "C" {
 #endif
 
-typedef struct c_mem_entity
+typedef struct
 {
     void* address;
     size_t size;
     char* file;
     size_t line;
 
-};
+}c_mem_entity;
 
+list* GLOBAL_LIST = 0;
 
-list* GLOBAL_LIST = NULL;
+/** Check the initialization of a list
+ * 
+ * @param l - new list entity
+ * @return true if list was declared. else false 
+ */
+uint8_t _start(list* l)
+{
+    if(!l)
+    {
+        return 0;
+    } else 
+    {
+        return 1;
+    }
 
+}
 
 /** Initialize the program and start recording
  * 
- * 
  */
-#define START GLOBAL_LIST = &make_list();\
+#define START \
+    GLOBAL_LIST = make_list();
 
 /** End recording, print all leftovers
- * 
- * 
+ *  
  */
 #define END_PRINT
 
 /** End recording, print all memory data
  *  
- * 
  */
 #define END_PRINT_ALL
 
-#ifdef START
 
-#define test printf("Inside\n")
+#define test if(_start(GLOBAL_LIST)) printf("Inside\n")
 #define malloc(n) malloc(n)
 #define realloc(n) realloc(n)
 #define calloc(num, size) calloc(num, size)
 #define free(addr) free(addr)
 
-#endif
 #ifdef _cplusplus
 }
 #endif
