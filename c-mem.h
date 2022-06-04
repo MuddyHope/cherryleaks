@@ -5,7 +5,9 @@
 #ifndef C_MEM_H
 #define C_MEM_H
 
-
+#ifdef _cplusplus
+extern "C" {
+#endif
 
 typedef struct c_mem_entity
 {
@@ -15,5 +17,9 @@ typedef struct c_mem_entity
     size_t line;
 
 };
+
+#ifdef _cplusplus
+}
+#endif
 
 #endif /*C_MEM_H*/
