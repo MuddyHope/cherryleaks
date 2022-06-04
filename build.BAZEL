@@ -1,12 +1,17 @@
 cc_library(
     name = "list",
-    hdrs = ["list.h"],
+    hdrs = ["inc/list.h"],
 )
 
 cc_library(
     name = "c-mem",
-    hdrs = ["c-mem.h"],
-    deps = ["list"],
+    hdrs = [
+        "c-mem.h",
+        "inc/c-mem-defines.h"
+        ],
+    deps = [
+        "list",
+    ],
 )
 
 cc_binary(

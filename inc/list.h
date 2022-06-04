@@ -173,7 +173,6 @@ int list_size(list l) {
 	return l.e_count;
 }
 
-
 void list_foreach(void (*cb)(void*)) {
 	for (element* p = l.first; p; p = p->next, i++) {
 		cb(p->content);
