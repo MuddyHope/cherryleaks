@@ -14,7 +14,21 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
     return alloc_addr;
 }
 
-void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, list *l){}
+void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, list *l)
+{
+    void* alloc_addr;
+    if (ptr == NULL) 
+    {
+        alloc_addr = malloc(amount);
+    }else
+    {
+        alloc_addr = realloc(ptr, amount);
+        //  Search for this address in GLOBAL_LIST
+        //  If it is there, replace with new values,
+        //  else, add new mem-block
+    }
+    return alloc_addr;
+}
 
 void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, list* l)
 {
