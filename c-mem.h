@@ -43,6 +43,18 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
     return alloc_addr;
 }
 
+/** Reallocate memory in the mem-block entity
+ * 
+ * 
+ * @param ptr   - This is the pointer to a memory block previously allocated with malloc, calloc or realloc to be reallocated. 
+ * @param amount - the amount of bytes to be reallocated
+ * @param file  - name of teh file where allocation is done
+ * @param line - line number where allocation is done
+ * @param list - gobal list structure where memory data is stored 
+ * @return pointer to reallocated memory 
+ */
+void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, list *l){}
+
 /** Check the initialization of a list
  * 
  * @param l - new list entity
@@ -81,7 +93,7 @@ uint8_t start(list* l)
 
 #define test if(start(GLOBAL_LIST)) printf("Inside\n")
 #define malloc(n) start(GLOBAL_LIST) ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST) : malloc(n)
-#define realloc(n) start(GLOBAL_LIST) ? : realloc(n)
+#define realloc(ptr, n) start(GLOBAL_LIST) ? : realloc(ptr, n)
 #define calloc(num, size) start(GLOBAL_LIST) ? : calloc(num, size)
 #define free(addr) start(GLOBAL_LIST) ? : free(addr)
 
