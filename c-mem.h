@@ -81,9 +81,9 @@ uint8_t start(list* l)
 
 #define test if(start(GLOBAL_LIST)) printf("Inside\n")
 #define malloc(n) start(GLOBAL_LIST) ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST) : malloc(n)
-#define realloc(n) realloc(n)
-#define calloc(num, size) calloc(num, size)
-#define free(addr) free(addr)
+#define realloc(n) start(GLOBAL_LIST) ? : realloc(n)
+#define calloc(num, size) start(GLOBAL_LIST) ? : calloc(num, size)
+#define free(addr) start(GLOBAL_LIST) ? : free(addr)
 
 #ifdef _cplusplus
 }
