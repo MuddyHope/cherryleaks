@@ -33,6 +33,12 @@ int list_pop_front(list* l, void* content, size_t size);
 void list_clear(list* l);
 int list_size(list* l);
 void list_foreach(list* l, void (*cb)(void*));
+/** Check the initialization of a list
+ * 
+ * @param l - new list entity
+ * @return true if list was declared. else false 
+ */
+uint8_t list_is_null(list* l);
 
 
 

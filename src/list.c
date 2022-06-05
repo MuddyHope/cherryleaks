@@ -145,3 +145,15 @@ void list_foreach(list* l, void (*cb)(void*)) {
 		cb(p->content);
 	}
 }
+
+uint8_t list_is_null(list* l)
+{
+    if(!l)
+    {
+        return 0;
+    } else 
+    {
+        return 1;
+    }
+
+}
