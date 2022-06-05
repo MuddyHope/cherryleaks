@@ -38,4 +38,14 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
  */
 void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, list* l);
 
+/** Free mem-blovk entity
+ *
+ * 
+ * @param ptr - pointer to allocated memory
+ * @param file  - name of teh file where allocation is done
+ * @param line - line number where allocation is done
+ * @param list - gobal list structure where memory data is stored 
+ */
+void memory_data_free(void* ptr, char* file, size_t line, list* l);
+
 #endif /*C_MEM_DMA_FUNC_H*/

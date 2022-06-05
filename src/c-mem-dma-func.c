@@ -17,3 +17,5 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
 void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, list *l){}
 
 void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, list* l){}
+
+void memory_data_free(void* ptr, char* file, size_t line, list* l){}
