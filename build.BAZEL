@@ -1,6 +1,19 @@
 cc_library(
     name = "list",
+    srcs = ["src/list.c"],
     hdrs = ["inc/list.h"],
+)
+
+cc_library(
+    name = "dma-func",
+    srcs = ["src/c-mem-dma-func.c"],
+    hdrs = [
+        "inc/c-mem-dma-func.h",
+        "inc/c-mem-defines.h",
+        ],
+    deps = [
+        "list",
+    ],
 )
 
 cc_library(
@@ -11,6 +24,7 @@ cc_library(
         ],
     deps = [
         "list",
+        "dma-func",
     ],
 )
 

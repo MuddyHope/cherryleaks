@@ -10,8 +10,7 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
     block.size = amount;
     block.file = file;
     block.line = line;
-    printf("LINE: %u\nFILE: %s\namount:%u\n", line, file, amount);
-    list_push_back(GLOBAL_LIST, (void*)&block, sizeof(block));
+    list_push_back(l, (void*)&block, sizeof(block));
     return alloc_addr;
 }
 

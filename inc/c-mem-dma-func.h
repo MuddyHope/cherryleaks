@@ -1,4 +1,8 @@
 #include "list.h"
+#include "c-mem-defines.h"
+
+#ifndef C_MEM_DMA_FUNC_H
+#define C_MEM_DMA_FUNC_H
 
 /** Add data to mem-block entity
  * 
@@ -21,3 +25,5 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l);
  * @return pointer to reallocated memory 
  */
 void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, list *l);
+
+#endif /*C_MEM_DMA_FUNC_H*/

@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "inc/list.h"
 #include "inc/c-mem-defines.h"
+#include "inc/c-mem-dma-func.h"
 
 #ifndef C_MEM_H
 #define C_MEM_H
@@ -10,18 +11,6 @@
 #ifdef _cplusplus
 extern "C" {
 #endif
-
-typedef struct
-{
-    void* address;
-    size_t size;
-    char* file;
-    size_t line;
-
-}c_mem_entity;
-
-list* GLOBAL_LIST = 0;
-
 
 /** Check the initialization of a list
  * 
@@ -39,6 +28,8 @@ uint8_t start(list* l)
     }
 
 }
+
+list* GLOBAL_LIST = NULL;
 
 /** Initialize the program and start recording
  * 
