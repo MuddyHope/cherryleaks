@@ -12,7 +12,6 @@
 extern "C" {
 #endif
 
-
 list* GLOBAL_LIST = NULL;
 
 /** Initialize the program and start recording
