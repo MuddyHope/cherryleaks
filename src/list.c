@@ -146,12 +146,21 @@ void list_foreach(list* l, void (*cb)(void*)) {
 	}
 }
 
+
+void* list_find(list* l, int (*predicate)(void*)) {
+    for (element* p = l->first; p; p = p->next) {
+        if (predicate(p->content)) {
+            return p->content;
+        }
+    }
+}
+
 uint8_t list_is_null(list* l)
 {
     if(!l)
     {
         return 0;
-    } else 
+    } else
     {
         return 1;
     }

@@ -33,6 +33,7 @@ int list_pop_front(list* l, void* content, size_t size);
 void list_clear(list* l);
 int list_size(list* l);
 void list_foreach(list* l, void (*cb)(void*));
+void* list_find(list* l, int (*predicate)(void*));
 /** Check the initialization of a list
  * 
  * @param l - new list entity
