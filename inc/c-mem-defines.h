@@ -4,6 +4,11 @@
 #define TRUE 1
 #define FALSE 0
 
+#define MALLOCATED 0
+#define REALLOACTED 1
+#define CALLOCATED 2
+#define FREED 3
+
 typedef struct c_mem_entity
 {
     void* address;

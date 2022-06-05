@@ -61,4 +61,19 @@ void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, li
     return alloc_addr;
 }
 
-void memory_data_free(void* ptr, char* file, size_t line, list* l){}
+void memory_data_free(void* ptr, char* file, size_t line, list* l)
+{
+    c_mem_entity* buffer;
+    for (element* p = l->first; p; p = p->next) 
+        {
+            buffer = ((c_mem_entity*)p->content);
+            if(buffer->address == ptr)
+            {
+                buffer->size = 0;
+                buffer->file = file;
+                buffer->line = line;
+                buffer->address = NULL;
+                free(ptr);
+            }
+        }
+}
