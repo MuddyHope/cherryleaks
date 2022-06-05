@@ -82,6 +82,9 @@ void* list_find(list* l, int (*predicate)(void*));
  */
 uint8_t list_is_null(list* l);
 
+/***/
+void replace_by_address(void* addr, size_t size, char* file, size_t line);
+
 
 
 
