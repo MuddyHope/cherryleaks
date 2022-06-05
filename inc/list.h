@@ -22,17 +22,59 @@ typedef struct {
 	int e_count;
 } list;
 
-
 element* allocate_element_(element* prev, element* next, const void* content, size_t size);
 
+/** Create a new list copy
+ * 
+ * @return list 
+ */
 list make_list();
+
+/** Push element to the back of the list
+ * @brief 
+ * 
+ * @param l - your list where element is pushed
+ * @param content - your element
+ * @param size - size of your element 
+ * @return 0 if succeess 
+ */
 int list_push_back(list* l, const void* content, size_t size);
+
+/** Push element to the front of the list
+ * 
+ * 
+ * @param l - your list where element is pushed
+ * @param content - your element
+ * @param size - size of your element 
+ * @return 0 if succeess 
+ */
 int list_push_front(list* l, const void* content, size_t size);
+
+/***/
 int list_pop_back(list* l, void* content, size_t size);
+
+/***/
 int list_pop_front(list* l, void* content, size_t size);
+
+/***/
 void list_clear(list* l);
+
+/** Get list size
+ * 
+ * 
+ * @param l - your list
+ * @return size of your list
+ */
 int list_size(list* l);
+
+/** List iterator 
+ *  
+ * 
+ * @param l - your list entity
+ * @param cb - callback function
+ */
 void list_foreach(list* l, void (*cb)(void*));
+void* list_find(list* l, int (*predicate)(void*));
 /** Check the initialization of a list
  * 
  * @param l - new list entity
