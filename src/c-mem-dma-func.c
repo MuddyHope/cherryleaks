@@ -10,6 +10,7 @@ void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
     block.size = amount;
     block.file = file;
     block.line = line;
+    block.alloc_type = MALLOCATED;
     list_push_back(l, (void*)&block, sizeof(block));
     return alloc_addr;
 }
@@ -35,6 +36,7 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
                 buffer->size = amount;
                 buffer->file = file;
                 buffer->line = line;
+                buffer->alloc_type = REALLOACTED;
                 return buffer->address;
             }
         }
@@ -44,6 +46,7 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
     new_block.size = amount;
     new_block.file = file;
     new_block.line = line;
+    new_block.alloc_type = REALLOACTED;
     list_push_back(l, (void*)&new_block, sizeof(new_block));
     return alloc_addr;
 }
@@ -57,6 +60,7 @@ void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, li
     block.size = amount*size;
     block.file = file;
     block.line = line;
+    block.alloc_type = CALLOCATED;
     list_push_back(l, (void*)&block, sizeof(block));
     return alloc_addr;
 }
@@ -73,6 +77,7 @@ void memory_data_free(void* ptr, char* file, size_t line, list* l)
                 buffer->file = file;
                 buffer->line = line;
                 buffer->address = NULL;
+                buffer->alloc_type = FREED;
                 free(ptr);
             }
         }

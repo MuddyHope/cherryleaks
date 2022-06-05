@@ -15,6 +15,7 @@ typedef struct c_mem_entity
     size_t size;
     char* file;
     size_t line;
+    uint8_t alloc_type;
 
 }c_mem_entity;
 
