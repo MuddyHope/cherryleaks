@@ -32,8 +32,6 @@ list* GLOBAL_LIST = NULL;
  */
 #define END_PRINT_ALL
 
-
-#define test if(list_is_null(GLOBAL_LIST)) printf("Inside\n")
 #define malloc(n) list_is_null(GLOBAL_LIST) ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST) : malloc(n)
 #define realloc(ptr, n) list_is_null(GLOBAL_LIST) ? memory_data_realloc(ptr, n __FILE__, __LINE__, GLOBAL_LIST) : realloc(ptr, n)
 #define calloc(n, size) list_is_null(GLOBAL_LIST) ? memory_data_calloc(n, size, __FILE__, __LINE__, GLOBAL_LIST) : calloc(n, size)
