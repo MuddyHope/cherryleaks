@@ -3,7 +3,9 @@
 int main()
 {
     START;
-    char* test_ = (char*)malloc(100);
+    void * hello = malloc(100);
+    void * moi = realloc(hello, 120);
+    free(moi);
     printf("Hello World\n");
     return 0;
 }

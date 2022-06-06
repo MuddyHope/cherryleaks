@@ -7,7 +7,10 @@ cc_library(
 cc_library(
     name = "block",
     srcs = ["src/c-mem-block.c"],
-    hdrs = ["inc/c-mem-block.h"],
+    hdrs = [
+        "inc/c-mem-block.h",
+        "inc/c-mem-defines.h",
+        ],
 )
 
 cc_library(

@@ -4,13 +4,16 @@
 void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)
 {
     void* alloc_addr = malloc(amount);
-    c_mem_entity block;
-
-    block.address = alloc_addr;
-    block.size = amount;
-    block.file = file;
-    block.line = line;
-    block.alloc_type = MALLOCATED;
+    c_mem_entity block = create_block();
+    block_replace_with(&block, alloc_addr, amount, file, line, MALLOCATED);
+    /*
+    printf("addr: %u\nsize: %u\nfile: %s\nline: %u\nallc: %d\n\n",
+                                                block.address,
+                                                block.size,
+                                                block.file,
+                                                block.line,
+                                                block.alloc_type);
+                                                */
     list_push_back(l, (void*)&block, sizeof(block));
     return alloc_addr;
 }
@@ -33,20 +36,18 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
             buffer = ((c_mem_entity*)p->content);
             if(buffer->address == alloc_addr)
             {
-                buffer->size = amount;
-                buffer->file = file;
-                buffer->line = line;
-                buffer->alloc_type = REALLOACTED;
+                block_replace_with(buffer,
+                                   alloc_addr,
+                                   amount,
+                                   file,
+                                   line,
+                                   REALLOACTED);                                
                 return buffer->address;
             }
         }
     }
-    c_mem_entity new_block;
-    new_block.address = alloc_addr;
-    new_block.size = amount;
-    new_block.file = file;
-    new_block.line = line;
-    new_block.alloc_type = REALLOACTED;
+    c_mem_entity new_block = create_block();
+    block_replace_with(&new_block, alloc_addr, amount, file, line, REALLOACTED);
     list_push_back(l, (void*)&new_block, sizeof(new_block));
     return alloc_addr;
 }
@@ -54,13 +55,8 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
 void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, list* l)
 {
     void* alloc_addr = calloc(amount, size);
-    c_mem_entity block;
-
-    block.address = alloc_addr;
-    block.size = amount*size;
-    block.file = file;
-    block.line = line;
-    block.alloc_type = CALLOCATED;
+    c_mem_entity block = create_block();
+    block_replace_with(&block, alloc_addr, amount, file, line, CALLOCATED);
     list_push_back(l, (void*)&block, sizeof(block));
     return alloc_addr;
 }
@@ -73,11 +69,18 @@ void memory_data_free(void* ptr, char* file, size_t line, list* l)
             buffer = ((c_mem_entity*)p->content);
             if(buffer->address == ptr)
             {
-                buffer->size = 0;
-                buffer->file = file;
-                buffer->line = line;
-                buffer->address = NULL;
-                buffer->alloc_type = FREED;
+                block_replace_with(buffer,
+                                   ptr,
+                                   C_MEM_BLOCK_SIZE_INIT,
+                                   file,
+                                   line,
+                                   FREED);
+                printf("addr: %u\nsize: %u\nfile: %s\nline: %u\nallc: %d\n",
+                                                buffer->address,
+                                                buffer->size,
+                                                buffer->file,
+                                                buffer->line,
+                                                buffer->alloc_type);
                 free(ptr);
             }
         }
