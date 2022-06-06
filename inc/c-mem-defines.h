@@ -9,14 +9,4 @@
 #define CALLOCATED 2
 #define FREED 3
 
-typedef struct c_mem_entity
-{
-    void* address;
-    size_t size;
-    char* file;
-    size_t line;
-    uint8_t alloc_type;
-
-}c_mem_entity;
-
 #endif /*C_MEM_DEFINES_H*/

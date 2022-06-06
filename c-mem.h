@@ -4,6 +4,7 @@
 #include "inc/list.h"
 #include "inc/c-mem-defines.h"
 #include "inc/c-mem-dma-func.h"
+#include "inc/c-mem-block.h"
 
 #ifndef C_MEM_H
 #define C_MEM_H

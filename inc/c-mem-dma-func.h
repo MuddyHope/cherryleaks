@@ -1,5 +1,6 @@
 #include "list.h"
 #include "c-mem-defines.h"
+#include "c-mem-block.h"
 
 #ifndef C_MEM_DMA_FUNC_H
 #define C_MEM_DMA_FUNC_H
