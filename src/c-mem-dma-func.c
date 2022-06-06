@@ -75,12 +75,6 @@ void memory_data_free(void* ptr, char* file, size_t line, list* l)
                                    file,
                                    line,
                                    FREED);
-                printf("addr: %u\nsize: %u\nfile: %s\nline: %u\nallc: %d\n",
-                                                buffer->address,
-                                                buffer->size,
-                                                buffer->file,
-                                                buffer->line,
-                                                buffer->alloc_type);
                 free(ptr);
             }
         }
