@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdin.h>
 #include "c-mem-defines.h"
 
 #ifndef C_MEM_BLOCK_H
@@ -36,5 +37,13 @@ void block_replace_with(c_mem_entity* block,
  * @return c_mem_entity with initial values
  */
 c_mem_entity create_block();
+
+/** Print data corresponding to mem-block
+ * 
+ * 
+ * @param block - mem block to be printed
+ * @return 1 if success or 0 if error occurs
+ */
+uint8_t c_mem_print_block(c_mem_entity * block);
 
 #endif /*C_MEM_BLOCK_H*/

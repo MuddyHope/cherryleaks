@@ -25,3 +25,8 @@ c_mem_entity create_block()
                        C_MEM_BLOCK_ALLOC_TYPE_INIT);               
     return block;
 }
+
+uint8_t c_mem_print_block(c_mem_entity * block)
+{
+    printf("%s");
+}
