@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "c-mem-defines.h"
+#include "list.h"
 
 #ifndef C_MEM_BLOCK_H
 #define C_MEM_BLOCK_H
@@ -12,7 +13,6 @@ typedef struct c_mem_entity
     char* file;
     size_t line;
     uint8_t alloc_type;
-    char * buffer;
 
 }c_mem_entity;
 
@@ -45,7 +45,7 @@ c_mem_entity create_block();
  * @param block - mem block to be printed
  * @return 1 if success or 0 if error occurs
  */
-int c_mem_generate_message(c_mem_entity * block);
+int c_mem_generate_message(c_mem_entity * block, char * buffer);
 
 
 /** Generate buffer according to type
@@ -54,5 +54,7 @@ int c_mem_generate_message(c_mem_entity * block);
  * @return char* - buffer
  */
 char * buffer_to_prt(int code);
+
+void c_mem_emit_data(list* l, uint8_t flag);
 
 #endif /*C_MEM_BLOCK_H*/

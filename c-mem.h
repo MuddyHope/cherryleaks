@@ -26,12 +26,16 @@ list* GLOBAL_LIST = NULL;
 /** End recording, print all leftovers
  *  
  */
-#define END_PRINT
+#define END_PRINT_LEFT \
+    c_mem_emit_data(GLOBAL_LIST, FALSE); \
+    list_clear(GLOBAL_LIST); \
 
 /** End recording, print all memory data
  *  
  */
-#define END_PRINT_ALL
+#define END_PRINT_ALL \
+    c_mem_emit_data(GLOBAL_LIST, TRUE); \
+    list_clear(GLOBAL_LIST); \
 
 #define malloc(n) list_is_null(GLOBAL_LIST) ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST) : malloc(n)
 #define realloc(ptr, n) list_is_null(GLOBAL_LIST) ? memory_data_realloc(ptr, n, __FILE__, __LINE__, GLOBAL_LIST) : realloc(ptr, n)

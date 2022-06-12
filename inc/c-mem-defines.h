@@ -4,7 +4,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define BUFFER_INTERNAL_SIZE 150
+#define BUFFER_INTERNAL_SIZE 1500
 
 /**
  * @brief 
@@ -20,13 +20,13 @@
  * 
  */
 #define BUFFER_MAL \
-    "Memory was allocated with malloc "
+    "malloc"
 #define BUFFER_REA \
-    "Memory was reallocated with realloc "
+    "realloc"
 #define BUFFER_CAL \
-    "Memory was allocated with calloc "
+    "calloc"
 #define BUFFER_FRE \
-    "Memory was freed  "
+    "freed"
 #define BUFFER_NULL \
     "Could not read memory block."    
 

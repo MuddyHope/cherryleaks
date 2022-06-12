@@ -11,6 +11,9 @@ cc_library(
         "inc/c-mem-block.h",
         "inc/c-mem-defines.h",
         ],
+    deps = [
+        "list",
+    ],
 )
 
 cc_library(
