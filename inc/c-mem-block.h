@@ -12,6 +12,7 @@ typedef struct c_mem_entity
     char* file;
     size_t line;
     uint8_t alloc_type;
+    char * buffer;
 
 }c_mem_entity;
 
@@ -38,14 +39,20 @@ void block_replace_with(c_mem_entity* block,
  */
 c_mem_entity create_block();
 
-/** Print data corresponding to mem-block
+/** Generate data string corresponding to mem-block
  * 
  * 
  * @param block - mem block to be printed
  * @return 1 if success or 0 if error occurs
  */
-int c_mem_print_block(c_mem_entity * block);
+int c_mem_generate_message(c_mem_entity * block);
 
+
+/** Generate buffer according to type
+ * 
+ * @param code - alloc_type 
+ * @return char* - buffer
+ */
 char * buffer_to_prt(int code);
 
 #endif /*C_MEM_BLOCK_H*/

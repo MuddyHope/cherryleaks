@@ -4,6 +4,8 @@
 #define TRUE 1
 #define FALSE 0
 
+#define BUFFER_INTERNAL_SIZE 150
+
 /**
  * @brief 
  * 

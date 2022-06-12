@@ -42,7 +42,14 @@ char * buffer_to_prt(int code)
     return BUFFER_NULL;
 }
 
-int c_mem_print_block(c_mem_entity * block)
+int c_mem_generate_message(c_mem_entity * block)
 {
-    return 1;
+    return snprintf(block->buffer,
+                   BUFFER_INTERNAL_SIZE,
+                   "MEM-Type: [%s] At the address: [%p] with size: [%lu] in file: [%s] on line: [%lu]\n",
+                   buffer_to_prt(block->alloc_type),
+                   block->address,
+                   block->size,
+                   block->file,
+                   block->line);
 }
