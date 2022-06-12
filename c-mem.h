@@ -1,3 +1,14 @@
+/**
+ * @file c-mem.h
+ * @author Vasily Davydov
+ * @brief General c-mem lib header file
+ * @version 0.1
+ * @date 2022-06-01
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>

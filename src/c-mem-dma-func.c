@@ -22,7 +22,7 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
     for (element* p = l->first; p; p = p->next) 
     {
         buffer = ((c_mem_entity*)p->content);
-        if(buffer->address == alloc_addr)
+        if(buffer->address == ptr)
         {
              block_replace_with(buffer,
                                 alloc_addr,
@@ -30,7 +30,7 @@ void* memory_data_realloc(void* ptr, size_t amount, char* file, size_t line, lis
                                 file,
                                 line,
                                 REALLOACTED);                                
-            return buffer->address;
+            return alloc_addr;
         }
     }
     
