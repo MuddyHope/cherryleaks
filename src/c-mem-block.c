@@ -26,7 +26,23 @@ c_mem_entity create_block()
     return block;
 }
 
-uint8_t c_mem_print_block(c_mem_entity * block)
+char * buffer_to_prt(int code)
 {
-    printf("%s");
+    switch (code) 
+    {                      
+        case MALLOCATED:           
+            return BUFFER_MAL;       
+        case REALLOACTED:       
+            return BUFFER_REA;   
+        case CALLOCATED:       
+            return BUFFER_CAL;
+        case FREED:
+            return BUFFER_FRE; 
+    }            
+    return BUFFER_NULL;
+}
+
+int c_mem_print_block(c_mem_entity * block)
+{
+    return 1;
 }

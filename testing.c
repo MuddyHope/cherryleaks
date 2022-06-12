@@ -7,5 +7,6 @@ int main()
     void * moi = realloc(hello, 120);
     free(moi);
     printf("Hello World\n");
+    END_PRINT;
     return 0;
 }

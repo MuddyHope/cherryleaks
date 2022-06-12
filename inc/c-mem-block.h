@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <stdin.h>
+#include <stdio.h>
 #include "c-mem-defines.h"
 
 #ifndef C_MEM_BLOCK_H
@@ -44,6 +44,8 @@ c_mem_entity create_block();
  * @param block - mem block to be printed
  * @return 1 if success or 0 if error occurs
  */
-uint8_t c_mem_print_block(c_mem_entity * block);
+int c_mem_print_block(c_mem_entity * block);
+
+char * buffer_to_prt(int code);
 
 #endif /*C_MEM_BLOCK_H*/
