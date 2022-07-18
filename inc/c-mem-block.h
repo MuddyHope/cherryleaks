@@ -25,12 +25,12 @@ typedef struct c_mem_entity
  * @param l - line to be replaced
  * @param allc_t - allocation type to be replaced
  */
-void block_replace_with(c_mem_entity* block,
-                        void* addr, 
-                        size_t s, 
-                        char* fl, 
-                        size_t l, 
-                        uint8_t allc_t);
+void block_value(c_mem_entity* block,
+                 void* addr,
+                 size_t s,
+                 char* fl,
+                 size_t l,
+                 uint8_t allc_t);
 
 /**
  * @brief Create an empty block object

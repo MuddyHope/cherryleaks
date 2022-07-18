@@ -1,11 +1,11 @@
 #include "../inc/c-mem-block.h"
 
-void block_replace_with(c_mem_entity* block,
-                        void* addr, 
-                        size_t s, 
-                        char* fl, 
-                        size_t l, 
-                        uint8_t allc_t)
+void block_value(c_mem_entity* block,
+                 void* addr,
+                 size_t s,
+                 char* fl,
+                 size_t l,
+                 uint8_t allc_t)
 {
     block->address = addr;
     block->size = s;
@@ -17,12 +17,12 @@ void block_replace_with(c_mem_entity* block,
 c_mem_entity create_block()
 {
     c_mem_entity block;
-    block_replace_with(&block,
-                       C_MEM_BLOCK_ADDR_INIT,
-                       C_MEM_BLOCK_SIZE_INIT,
-                       C_MEM_BLOCK_FILE_INIT,
-                       C_MEM_BLOCK_LINE_INIT,
-                       C_MEM_BLOCK_ALLOC_TYPE_INIT);               
+    block_value(&block,
+                C_MEM_BLOCK_ADDR_INIT,
+                C_MEM_BLOCK_SIZE_INIT,
+                C_MEM_BLOCK_FILE_INIT,
+                C_MEM_BLOCK_LINE_INIT,
+                C_MEM_BLOCK_ALLOC_TYPE_INIT);
     return block;
 }
 
