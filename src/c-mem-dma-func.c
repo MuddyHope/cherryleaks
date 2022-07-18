@@ -55,7 +55,7 @@ void memory_data_free(void* ptr, char* file, size_t line, list* l)
     for (element* p = l->first; p; p = p->next) 
         {
             buffer = ((c_mem_entity*)p->content);
-            if(buffer->address == ptr)
+            if(buffer->address == ptr && buffer->alloc_type != FREED)
             {
                 block_replace_with(buffer,
                                    ptr,
@@ -64,7 +64,9 @@ void memory_data_free(void* ptr, char* file, size_t line, list* l)
                                    line,
                                    FREED);
                 free(ptr);
+                break;
             }
+            // TODO: Add empty list error
         }
 }
 
