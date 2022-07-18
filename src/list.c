@@ -166,8 +166,3 @@ uint8_t list_is_null(list* l)
     }
 
 }
-
-void replace_by_address()
-{
-    
-}

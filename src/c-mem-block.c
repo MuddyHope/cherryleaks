@@ -67,12 +67,12 @@ void c_mem_emit_data(list* l, uint8_t flag)
                 switch (flag)
                 {
                     case TRUE:
-                        printf("%.*s\n", bufferSize, buffer);
+                        printf("%.*s\n", (int)bufferSize, buffer);
                         break;
                     case FALSE:
                         if (blcok_iter->alloc_type != FREED)
                         {
-                            printf("%.*s\n", bufferSize, buffer);
+                            printf("%.*s\n", (int)bufferSize, buffer);
                         }
                         break;
                     default:
