@@ -9,7 +9,7 @@
 
 int main(void)
 {
-    C_MEM_START;
+    C_MEM_START
     void* moi = malloc(1000);
 
     void * moi2 = realloc(moi, 900);
@@ -18,6 +18,6 @@ int main(void)
 
     free(cal);
     free(moi);
-    C_MEM_END_PRINT_LEFT;
+    C_MEM_END_PRINT_LEFT
     return 0;
 }
