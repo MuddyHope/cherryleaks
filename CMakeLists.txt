@@ -3,6 +3,10 @@ project(c-memory)
 
 set(CMAKE_CXX_STANDARD 11)
 
+add_subdirectory(c-mem)
 
-add_executable(test testing.c c-mem-block.c c-mem-dma-func.c list.c)
-target_include_directories(test PRIVATE *.h)
+add_executable(test testing.c)
+
+target_link_libraries(test PUBLIC c-mem)
+
+target_include_directories(test PRIVATE c-mem)

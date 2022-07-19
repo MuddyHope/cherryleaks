@@ -1,6 +1,4 @@
 #include "c-mem.h"
-
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -16,7 +14,6 @@ int main(void)
 
     void * cal = calloc(5, sizeof(char));
 
-    free(cal);
     free(moi);
     C_MEM_END_PRINT_LEFT
     return 0;
