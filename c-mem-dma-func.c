@@ -1,4 +1,4 @@
-#include "../inc/c-mem-dma-func.h"
+#include "c-mem.h"
 
 
 void* memory_data_malloc(size_t amount, char* file, size_t line, list *l)

@@ -1,4 +1,4 @@
-#include "../inc/c-mem-block.h"
+#include "c-mem.h"
 
 void block_value(c_mem_entity* block,
                  void* addr,
