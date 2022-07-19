@@ -33,6 +33,7 @@ char *buffer_to_prt(int code) {
 
 int c_mem_generate_message(c_mem_entity *block, char *buffer) {
   return snprintf(buffer, BUFFER_INTERNAL_SIZE,
+                  //TODO: Change the format for current message
                   "MEM-Type: [%s] At the address: [%p] with size: [%lu] in "
                   "file: [%s] on line: [%lu]",
                   buffer_to_prt(block->alloc_type), block->address, block->size,

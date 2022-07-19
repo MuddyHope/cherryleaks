@@ -9,6 +9,8 @@
  *
  */
 
+// TODO: add proper documentation
+
 #include "list.h"
 #include <stdint.h>
 #include <stdio.h>
