@@ -1,1 +1,1 @@
-[![CMake](https://github.com/vas-dav/c-memory/actions/workflows/cmake.yml/badge.svg)](https://github.com/vas-dav/c-memory/actions/workflows/cmake.yml)
+[![Build](https://github.com/vas-dav/c-memory/actions/workflows/build.yml/badge.svg)](https://github.com/vas-dav/c-memory/actions/workflows/build.yml)
