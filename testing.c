@@ -14,7 +14,7 @@ int main(void)
 
     void * moi2 = realloc(moi, 900);
 
-    void * cal = calloc(5, sizeof(char))
+    void * cal = calloc(5, sizeof(char));
 
     free(cal);
     free(moi);

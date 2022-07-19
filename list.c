@@ -1,4 +1,4 @@
-#include "../inc/list.h"
+#include "list.h"
 
 element* allocate_element_(element* prev, element* next, const void* content, size_t size) {
 	element* e = malloc(sizeof(element));
