@@ -149,7 +149,7 @@ void* memory_data_calloc(size_t amount, size_t size, char* file, size_t line, li
  */
 void memory_data_free(void* ptr, char* file, size_t line, list* l);
 
-list* GLOBAL_LIST = NULL;
+static list* GLOBAL_LIST = NULL;
 
 /** Initialize the program and start recording
  * 
