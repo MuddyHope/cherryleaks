@@ -1,3 +1,12 @@
+/**
+ * @file c-mem-dma-func.h
+ * @author Vasily Davydov
+ * @version 0.1
+ * @date 2022-06-05
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "c-mem.h"
 
 void *memory_data_malloc(size_t amount, char *file, size_t line, list *l) {

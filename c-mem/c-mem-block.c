@@ -1,4 +1,19 @@
+/**
+ * @file c-mem-block.h
+ * @author Vasily Davydov
+ * @version 0.1
+ * @date 2022-06-06
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
+
 #include "c-mem.h"
+
+/** Strings to print for user after calling C_MEM_PRINT_$ */
+static const char * C_MEM_BUFFER_MESSAGE_TYPE[] = {"malloc", "realloc", "calloc",
+                                                   "freed",
+                                                   "Could not read memory block."};
 
 void block_value(c_mem_entity *block, void *addr, size_t s, char *fl, size_t l,
                  uint8_t allc_t) {
@@ -17,22 +32,22 @@ c_mem_entity create_block() {
   return block;
 }
 
-char *buffer_to_prt(int code) {
+const char *buffer_to_prt(int code) {
   switch (code) {
   case MALLOCATED:
-    return BUFFER_MAL;
+    return C_MEM_BUFFER_MESSAGE_TYPE[MALLOCATED];
   case REALLOACTED:
-    return BUFFER_REA;
+    return C_MEM_BUFFER_MESSAGE_TYPE[REALLOACTED];
   case CALLOCATED:
-    return BUFFER_CAL;
+    return C_MEM_BUFFER_MESSAGE_TYPE[CALLOCATED];
   case FREED:
-    return BUFFER_FRE;
+    return C_MEM_BUFFER_MESSAGE_TYPE[FREED];
   }
-  return BUFFER_NULL;
+  return C_MEM_BUFFER_MESSAGE_TYPE[4];
 }
 
 int c_mem_generate_message(c_mem_entity *block, char *buffer) {
-  return snprintf(buffer, BUFFER_INTERNAL_SIZE,
+  return snprintf(buffer, C_MEM_BUFFER_INTERNAL_SIZE,
                   //TODO: Change the format for current message
                   "MEM-Type: [%s] At the address: [%p] with size: [%lu] in "
                   "file: [%s] on line: [%lu]",
@@ -41,7 +56,7 @@ int c_mem_generate_message(c_mem_entity *block, char *buffer) {
 }
 
 void c_mem_emit_data(list *l, uint8_t flag) {
-  char buffer[BUFFER_INTERNAL_SIZE] = {0};
+  char buffer[C_MEM_BUFFER_INTERNAL_SIZE] = {0};
   c_mem_entity *blcok_iter;
   for (element *p = l->first; p; p = p->next) {
     blcok_iter = ((c_mem_entity *)p->content);
@@ -57,7 +72,7 @@ void c_mem_emit_data(list *l, uint8_t flag) {
         }
         break;
       default:
-        printf("Wrong argument passed in fucntion: %s", __func__);
+        printf("Wrong argument passed in function: %s", __func__);
         break;
       }
     }

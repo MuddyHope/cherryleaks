@@ -1,20 +1,17 @@
 /**
  * @file c-mem.h
  * @author Vasily Davydov
- * @brief General c-mem lib header file
  * @version 0.1
  * @date 2022-06-01
  *
  * @copyright Copyright (c) 2022
  *
+ * General C-MEM lib header file
+ *
  */
 
 // TODO: add proper documentation
 
-#include "list.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #ifndef C_MEM_H
 #define C_MEM_H
@@ -23,36 +20,55 @@
 extern "C" {
 #endif
 
-#define TRUE 1
-#define FALSE 0
+#include "list.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define BUFFER_INTERNAL_SIZE 1500
+/** Buffer length reserved for internal message */
+#define C_MEM_BUFFER_INTERNAL_SIZE 1500
 
-/**
- * @brief
- *
- */
+/** A malloc type of memory inside of c-mem-entity */
 #define MALLOCATED 0
+
+/** A realloc type of memory inside of c-mem-entity */
 #define REALLOACTED 1
+
+/** A calloc type of memory inside of c-mem-entity */
 #define CALLOCATED 2
+
+/** A freed type of memory inside of c-mem-entity */
 #define FREED 3
 
-/**
- * @brief
- *
- */
-#define BUFFER_MAL "malloc"
-#define BUFFER_REA "realloc"
-#define BUFFER_CAL "calloc"
-#define BUFFER_FRE "freed"
-#define BUFFER_NULL "Could not read memory block."
-
+/** An initial value for block address in c-mem-entity structure */
 #define C_MEM_BLOCK_ADDR_INIT NULL
+
+/** An initial value for block size in c-mem-entity structure */
 #define C_MEM_BLOCK_SIZE_INIT 0
+
+/** An initial value for file in c-mem-entity structure */
 #define C_MEM_BLOCK_FILE_INIT NULL
+
+/** An initial value for line in c-mem-entity structure */
 #define C_MEM_BLOCK_LINE_INIT 0
+
+/** An initial value for allocation type in c-mem-entity structure */
 #define C_MEM_BLOCK_ALLOC_TYPE_INIT 255
 
+
+/** General structure for storing data of allocations
+ *
+ * - address is used for storing a value returned by
+ *   allocator function. Can be changed inside of those
+ *   functions.
+ * - size of the allocation is interchangeable as well,
+ *   since it is possible to reallocate memory on the same address
+ * - file is a char string, where program stores last place address
+ *   was used in, same goes for {line}
+ * - alloc_type is a value which indicates the type of allocation,
+ *   this can be used to store user needed data.
+ *
+ * */
 typedef struct c_mem_entity {
   void *address;
   size_t size;
@@ -94,7 +110,7 @@ int c_mem_generate_message(c_mem_entity *block, char *buffer);
  * @param code - alloc_type
  * @return char* - buffer
  */
-char *buffer_to_prt(int code);
+const char *buffer_to_prt(int code);
 
 void c_mem_emit_data(list *l, uint8_t flag);
 
@@ -135,7 +151,7 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line,
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line,
                          list *l);
 
-/** Free mem-blovk entity
+/** Free mem-block entity
  *
  *
  * @param ptr - pointer to allocated memory
@@ -143,29 +159,34 @@ void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line,
  */
 void memory_data_free(void *ptr, char *file, size_t line, list *l);
 
+// TODO: Make separate bool file
+#define TRUE 1
+
+#define FALSE 0
+
+/** Declaration of the Global List, where all allocated data is stored */
 static list *GLOBAL_LIST = NULL;
 
-/** Initialize the program and start recording
- *
- */
+/** Initialize the program and start recording */
 #define C_MEM_START                                                            \
   list l = make_list();                                                        \
   GLOBAL_LIST = &l;
 
-/** End recording, print all leftovers
- *
- */
+/** End recording, print all leftovers */
 #define C_MEM_END_PRINT_LEFT                                                   \
   c_mem_emit_data(GLOBAL_LIST, FALSE);                                         \
   list_clear(GLOBAL_LIST);
 
-/** End recording, print all memory data
- *
- */
+/** End recording, print all memory data */
 #define C_MEM_END_PRINT_ALL                                                    \
   c_mem_emit_data(GLOBAL_LIST, TRUE);                                          \
   list_clear(GLOBAL_LIST);
 
+/** ALLOCATORS REPLACED WITH C_MEM_DMA FUNCTIONS
+ *
+ *  Replacing memory allocation functions, with c-mem-dma functions
+ *  in case the program has been started and Global List is initialized.
+ * */
 #define malloc(n)                                                              \
   list_is_null(GLOBAL_LIST)                                                    \
       ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST)                 \
