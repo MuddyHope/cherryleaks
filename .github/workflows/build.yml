@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: git submodule update --init --recursive
 
     - name: Print paths
       run: cd /home/runner/work/c-memory && ls .
