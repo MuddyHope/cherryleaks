@@ -8,7 +8,7 @@ enable_testing()
 
 add_subdirectory(c-mem)
 
-add_subdirectory(googletest EXCLUDE_FROM_ALL)
+add_subdirectory(googletest)
 
 add_executable(hello-world testing.c)
 
