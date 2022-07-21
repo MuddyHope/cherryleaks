@@ -16,7 +16,6 @@
  */
 
 #include <gtest/gtest.h>
-extern "C" {
 #include "../c-mem/c-mem.h"
 
 /** MEMORY_DATA_MALLOC */
@@ -82,5 +81,4 @@ TEST(cMemDmaTest, test_free_struct_internal) {
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
-}
 }
