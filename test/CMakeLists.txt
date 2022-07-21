@@ -3,14 +3,12 @@ project(c-memory)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(Sources c-mem-dma-test.cpp)
-
-add_executable(tests ${Sources})
-target_link_libraries(tests PUBLIC
+add_executable(c-mem-dma-test c-mem-dma-test.cpp)
+target_link_libraries(c-mem-dma-test PUBLIC
         gtest_main
         c-mem)
 
 add_test(
-        NAME tests
-        COMMAND tests
+        NAME c-mem-dma-test
+        COMMAND c-mem-dma-test
 )

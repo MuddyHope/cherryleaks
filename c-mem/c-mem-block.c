@@ -11,9 +11,8 @@
 #include "c-mem.h"
 
 /** Strings to print for user after calling C_MEM_PRINT_$ */
-static const char * C_MEM_BUFFER_MESSAGE_TYPE[] = {"malloc", "realloc", "calloc",
-                                                   "freed",
-                                                   "Could not read memory block."};
+static const char *C_MEM_BUFFER_MESSAGE_TYPE[] = {
+    "malloc", "realloc", "calloc", "freed", "Could not read memory block."};
 
 void block_value(c_mem_entity *block, void *addr, size_t s, char *fl, size_t l,
                  uint8_t allc_t) {

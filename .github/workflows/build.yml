@@ -28,13 +28,16 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S ${{github.workspace}} -B ${{github.workspace}}/cmake-build-debug
 
-    - name: Build
+    - name: Build Main
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/cmake-build-debug --target hello-world -- -j 9
 
-    - name: Test
+    - name: Build Tests
+      run: cmake --build ${{github.workspace}}/cmake-build-debug --target c-mem-dma-test -- -j 9
+
+    - name: Run Tests
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: ${{github.workspace}}/cmake-build-debug/test/c-mem-dma-test
       
