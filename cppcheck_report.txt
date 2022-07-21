@@ -4,7 +4,7 @@ c-mem/c-mem-block.c:0:0: information: This file is not analyzed. Cppcheck failed
 c-mem/c-mem-dma-func.c:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. Use -v for more details. [noValidConfiguration]
 
 ^
-test/c-mem-dma-test.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. Use -v for more details. [noValidConfiguration]
+test/cMemDmaTest.cpp:0:0: information: This file is not analyzed. Cppcheck failed to extract a valid configuration. Use -v for more details. [noValidConfiguration]
 
 ^
 nofile:0:0: information: Cppcheck cannot find all the include files (use --check-config for details) [missingInclude]
