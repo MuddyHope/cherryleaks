@@ -3,7 +3,7 @@ project(c-memory)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(c-mem-dma-test c-mem-dma-test.cpp)
+add_executable(c-mem-dma-test cMemDmaTest.cpp)
 target_link_libraries(c-mem-dma-test PUBLIC
         gtest_main
         c-mem)
