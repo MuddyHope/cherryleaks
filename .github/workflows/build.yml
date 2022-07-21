@@ -32,12 +32,7 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/cmake-build-debug --target hello-world -- -j 9
 
-    - name: Build Tests
-      run: cmake --build ${{github.workspace}}/cmake-build-debug --target c-mem-dma-test -- -j 9
+    - name: Build & Run C_MEM_DMA_TESTS
+      run: cmake --build ${{github.workspace}}/cmake-build-debug --target c-mem-dma-test -- -j 9 && ${{github.workspace}}/cmake-build-debug/test/c-mem-dma-test
 
-    - name: Run Tests
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ${{github.workspace}}/cmake-build-debug/test/c-mem-dma-test
       
