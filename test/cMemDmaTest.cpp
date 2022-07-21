@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 #include "../c-mem/c-mem.h"
-
+}
 /** MEMORY_DATA_MALLOC */
 TEST(cMemDmaTest, test_malloc_struct_internal) {
   C_MEM_START
