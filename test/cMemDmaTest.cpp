@@ -57,7 +57,7 @@ TEST(cMemDmaTest, test_calloc_struct_internal) {
   buffer = ((c_mem_entity *)GLOBAL_LIST->first->content);
   EXPECT_EQ(buffer->address, pointer);
   EXPECT_EQ(buffer->alloc_type, CALLOCATED);
-  EXPECT_EQ(buffer->size, 100);
+  EXPECT_EQ(buffer->size, 10);
   EXPECT_EQ(buffer->line, line);
   EXPECT_EQ(buffer->file, __FILE__);
   list_clear(GLOBAL_LIST);
