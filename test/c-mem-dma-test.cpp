@@ -20,7 +20,7 @@ extern "C" {
 #include "../c-mem/c-mem.h"
 
 /** MEMORY_DATA_MALLOC */
-TEST(c_mem_dma_test, test_malloc_struct_internal) {
+TEST(c_mem_dma_, test_malloc_struct_internal) {
   C_MEM_START
     c_mem_entity *buffer;
   void *pointer = malloc(100); int line = __LINE__;
@@ -35,7 +35,7 @@ TEST(c_mem_dma_test, test_malloc_struct_internal) {
 }
 
 /** MEMORY_DATA_REALLOC */
-TEST(c_mem_dma_test, test_realloc_struct_internal) {
+TEST(c_mem_dma_, test_realloc_struct_internal) {
   C_MEM_START
     c_mem_entity *buffer;
   void *pointer = realloc(NULL, 100); int line = __LINE__;
@@ -50,7 +50,7 @@ TEST(c_mem_dma_test, test_realloc_struct_internal) {
 }
 
 /** MEMORY_DATA_CALLOC */
-TEST(c_mem_dma_test, test_calloc_struct_internal) {
+TEST(c_mem_dma_, test_calloc_struct_internal) {
   C_MEM_START
     c_mem_entity *buffer;
   void *pointer = calloc(100, 1); int line = __LINE__;
@@ -65,7 +65,7 @@ TEST(c_mem_dma_test, test_calloc_struct_internal) {
 }
 
 /** MEMORY_DATA_FREE */
-TEST(c_mem_dma_test, test_free_struct_internal) {
+TEST(c_mem_dma_, test_free_struct_internal) {
   C_MEM_START
     c_mem_entity *buffer;
   void *pointer = malloc(100);
