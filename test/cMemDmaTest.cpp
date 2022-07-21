@@ -16,6 +16,7 @@
  */
 
 #include <gtest/gtest.h>
+extern "C" {
 #include "../c-mem/c-mem.h"
 }
 /** MEMORY_DATA_MALLOC */
