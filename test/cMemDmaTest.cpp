@@ -34,6 +34,16 @@ TEST(cMemDmaTest, test_malloc_struct_internal) {
   free(pointer);
 }
 
+TEST(cMemDmaTest, test_malloc_return) {
+    C_MEM_START
+     c_mem_entity *buffer;
+    void *pointer = malloc(100);
+    buffer = ((c_mem_entity *)GLOBAL_LIST->first->content);
+    ASSERT_EQ(pointer, buffer->address);
+    list_clear(GLOBAL_LIST);
+    free(pointer);
+}
+
 /** MEMORY_DATA_REALLOC */
 TEST(cMemDmaTest, test_realloc_struct_internal) {
   C_MEM_START
@@ -49,6 +59,17 @@ TEST(cMemDmaTest, test_realloc_struct_internal) {
   free(pointer);
 }
 
+TEST(cMemDmaTest, test_realloc_return) {
+    C_MEM_START
+    c_mem_entity *buffer;
+    void *pointer = realloc(nullptr, 100);
+    buffer = ((c_mem_entity *)GLOBAL_LIST->first->content);
+    ASSERT_EQ(pointer, buffer->address);
+    list_clear(GLOBAL_LIST);
+    free(pointer);
+}
+
+
 /** MEMORY_DATA_CALLOC */
 TEST(cMemDmaTest, test_calloc_struct_internal) {
   C_MEM_START
@@ -62,6 +83,16 @@ TEST(cMemDmaTest, test_calloc_struct_internal) {
   EXPECT_EQ(buffer->file, __FILE__);
   list_clear(GLOBAL_LIST);
   free(pointer);
+}
+
+TEST(cMemDmaTest, test_calloc_return) {
+    C_MEM_START
+    c_mem_entity *buffer;
+    void *pointer = calloc(1, 100);
+    buffer = ((c_mem_entity *)GLOBAL_LIST->first->content);
+    ASSERT_EQ(pointer, buffer->address);
+    list_clear(GLOBAL_LIST);
+    free(pointer);
 }
 
 /** MEMORY_DATA_FREE */
