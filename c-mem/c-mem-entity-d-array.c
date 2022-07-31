@@ -79,13 +79,18 @@ Rame* find_rame(Rame* beginning, size_t (*cherry_callback)(void*)){
     return NULL;
 }
 
-void pick_cherry(Rame* beginning, size_t (*cherry_callback)(void*)){
-    Rame* to_delete = find_rame(beginning, cherry_callback);
-    assert(to_delete);
-
-    free(to_delete->data);
-
-    Rame* prev = to_delete->next;
+void pick_cherry(Rame* beginning, void* cherry){
+    Rame* temp;
+    Rame* prev;
+    for(temp = beginning;temp;temp = temp->next) {
+        if(temp->data == cherry){
+            prev->next = temp->next;
+            free(temp->data);
+            free(temp);
+            return;
+        }
+        prev = temp;
+    }
 }
 
 
