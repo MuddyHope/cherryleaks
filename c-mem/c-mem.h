@@ -24,6 +24,13 @@ extern "C" {
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dlfcn.h>
+#include <stddef.h>
+#include <assert.h>
+#include <string.h>
+
+void *(*system_malloc)(size_t) = NULL;
+void (*system_free)(void*) = NULL;
 
 /** Buffer length reserved for internal message */
 #define C_MEM_BUFFER_INTERNAL_SIZE 1500
@@ -112,7 +119,7 @@ int c_mem_generate_message(c_mem_entity *block, char *buffer);
  */
 const char *buffer_to_prt(int code);
 
-void c_mem_emit_data(list *l, uint8_t flag);
+void c_mem_emit_data(uint8_t flag);
 
 /** Add data to mem-block entity
  *
@@ -122,7 +129,7 @@ void c_mem_emit_data(list *l, uint8_t flag);
  * @param list - global list structure where memory data is stored
  * @return pointer to allocated memory
  */
-void *memory_data_malloc(size_t amount, char *file, size_t line, list *l);
+void *memory_data_malloc(size_t amount, char *file, size_t line);
 
 /** Reallocate memory in the mem-block entity
  *
@@ -135,8 +142,7 @@ void *memory_data_malloc(size_t amount, char *file, size_t line, list *l);
  * @param list - global list structure where memory data is stored
  * @return pointer to reallocated memory
  */
-void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line,
-                          list *l);
+void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line);
 
 /** Add data to mem-block entity with calloc
  *
@@ -148,8 +154,7 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line,
  * @param list - global list structure where memory data is stored
  * @return pointer to allocated memory
  */
-void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line,
-                         list *l);
+void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line);
 
 /** Free mem-block entity
  *
@@ -157,7 +162,7 @@ void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line,
  * @param ptr - pointer to allocated memory
  * @param list - global list structure where memory data is stored
  */
-void memory_data_free(void *ptr, char *file, size_t line, list *l);
+void memory_data_free(void *ptr, char *file, size_t line);
 
 // TODO: Make separate bool file
 #define TRUE 1
@@ -165,44 +170,93 @@ void memory_data_free(void *ptr, char *file, size_t line, list *l);
 #define FALSE 0
 
 /** Declaration of the Global List, where all allocated data is stored */
-static list *GLOBAL_LIST = NULL;
+// static list *GLOBAL_LIST = NULL;
 
 /** Initialize the program and start recording */
 #define C_MEM_START                                                            \
-  list l = make_list();                                                        \
-  GLOBAL_LIST = &l;
+
+typedef struct Rame {
+    void* data;
+    struct Rame* next;
+}Rame;
+
+Rame* grow_first_rame();
+/** Assign a new beginning of the rame with cherry allocation
+ *
+ * @param beginning - Reference to the beginning of the Global Rame
+ * @param cherry - The element to be written inside Rame
+ * @param cherry_size - Size of the element to be written
+ */
+void grow_cherry_at_beginning(Rame* beginning, void* cherry, size_t cherry_size);
+
+/** Grow a cherry in the middle of other cherries
+ *
+ * @param cherry_on_rame - The position of cherry on the rame where
+ * to grow another cherry
+ * @param cherry - The element to be written inside Rame
+ * @param cherry_size - Size of the element to be written
+ */
+void grow_cherry_after_cherry(Rame* cherry_on_rame, void* cherry, size_t cherry_size);
+
+/** Iterator through rame with a (void) callback
+ *
+ * @param beginning - Reference to the beginning of the Global Rame
+ * @param cherry_callback - a callback with type (void) to be executed on each cherry
+ */
+void for_each_cherry(Rame* beginning, void (*cherry_callback)(void*));
+
+/**
+ *
+ * @param beginning - Reference to the beginning of the Global Rame
+ * @param cherry_callback - a callback with type (int) to be executed on each cherry.
+ * May be a comparison.
+ * @return Rame* - The rame which matched the condition of the callback.
+ */
+Rame* find_rame(Rame* beginning, int (*cherry_callback)(void*));
+
+
+/** Free a particular cherry
+ *
+ * @param beginning - Reference to the beginning of the Global Rame
+ * @param cherry - The cherry to be freed
+ *
+ * TODO: return value if not found
+ */
+void pick_cherry(Rame* beginning, void* cherry);
+
+/** Pick all cherries from all rames (Free everything)
+ *
+ * @param beginning - Reference to the beginning of the Global Rame
+ */
+void pick_all_cherries(Rame* beginning);
 
 /** End recording, print all leftovers */
 #define C_MEM_END_PRINT_LEFT                                                   \
-  c_mem_emit_data(GLOBAL_LIST, FALSE);                                         \
+  c_mem_emit_data(FALSE);                                         \
   list_clear(GLOBAL_LIST);
 
 /** End recording, print all memory data */
 #define C_MEM_END_PRINT_ALL                                                    \
-  c_mem_emit_data(GLOBAL_LIST, TRUE);                                          \
-  list_clear(GLOBAL_LIST);
+  c_mem_emit_data(TRUE);                                          \
+
 
 /** ALLOCATORS REPLACED WITH C_MEM_DMA FUNCTIONS
  *
  *  Replacing memory allocation functions, with c-mem-dma functions
  *  in case the program has been started and Global List is initialized.
  * */
-#define malloc(n)                                                              \
-  list_is_null(GLOBAL_LIST)                                                    \
-      ? memory_data_malloc(n, __FILE__, __LINE__, GLOBAL_LIST)                 \
-      : malloc(n)
-#define realloc(ptr, n)                                                        \
-  list_is_null(GLOBAL_LIST)                                                    \
-      ? memory_data_realloc(ptr, n, __FILE__, __LINE__, GLOBAL_LIST)           \
-      : realloc(ptr, n)
-#define calloc(n, size)                                                        \
-  list_is_null(GLOBAL_LIST)                                                    \
-      ? memory_data_calloc(n, size, __FILE__, __LINE__, GLOBAL_LIST)           \
-      : calloc(n, size)
-#define free(addr)                                                             \
-  list_is_null(GLOBAL_LIST)                                                    \
-      ? memory_data_free(addr, __FILE__, __LINE__, GLOBAL_LIST)                \
-      : free(addr)
+
+/*
+ * In case of mac: https://stackoverflow.com/questions/929893/how-can-i-override-malloc-calloc-free-etc-under-os-x
+ * In case of Linux: malloc hooks
+ *
+ * */
+
+
+#define malloc(n) memory_data_malloc(n, __FILE__, __LINE__)
+#define realloc(ptr, n) memory_data_realloc(ptr, n, __FILE__, __LINE__)
+#define calloc(n, size) memory_data_calloc(n, size, __FILE__, __LINE__)
+#define free(addr) memory_data_free(addr, __FILE__, __LINE__) free(addr)
 
 #ifdef _cplusplus
 }

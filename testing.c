@@ -5,16 +5,19 @@
 #include <time.h>
 #include <assert.h>
 
+typedef struct vector{
+    int x;
+    int y;
+}VEC;
+
 int main(void)
 {
-    C_MEM_START
-    void* moi = malloc(1000);
+    VEC v1;
+    v1.x = 15;
+    v1.y = 14;
+    void * h = malloc(100);
 
-    void* cal = calloc(5, sizeof(char));
 
-    free(moi);
-    free(cal);
-
-    C_MEM_END_PRINT_LEFT
+    C_MEM_END_PRINT_ALL
     return 0;
 }
