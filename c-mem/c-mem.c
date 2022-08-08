@@ -17,6 +17,7 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
         system_malloc = dlsym(RTLD_NEXT, "malloc");
     }
   void *alloc_addr = system_malloc(amount);
+  // TODO: assert address
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
   grow_cherry_at_beginning(&global, (void*)&block, sizeof(block));

@@ -126,7 +126,6 @@ void c_mem_emit_data(uint8_t flag);
  * @param amount - amount of bytes to be allocated
  * @param file  - name of the file where allocation is done
  * @param line - line number where allocation is done
- * @param list - global list structure where memory data is stored
  * @return pointer to allocated memory
  */
 void *memory_data_malloc(size_t amount, char *file, size_t line);
@@ -139,7 +138,6 @@ void *memory_data_malloc(size_t amount, char *file, size_t line);
  * @param amount - the amount of bytes to be reallocated
  * @param file  - name of the file where allocation is done
  * @param line - line number where allocation is done
- * @param list - global list structure where memory data is stored
  * @return pointer to reallocated memory
  */
 void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line);
@@ -151,16 +149,14 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line);
  * @param size - size of a data-unit
  * @param file  - name of the file where allocation is done
  * @param line - line number where allocation is done
- * @param list - global list structure where memory data is stored
  * @return pointer to allocated memory
  */
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line);
 
 /** Free mem-block entity
  *
- *
+ * TODO: add line and file
  * @param ptr - pointer to allocated memory
- * @param list - global list structure where memory data is stored
  */
 void memory_data_free(void *ptr, char *file, size_t line);
 
