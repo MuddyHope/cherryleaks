@@ -19,7 +19,7 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
   void *alloc_addr = system_malloc(amount);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
-  grow_cherry_at_beginning(global, (void*)&block, sizeof(block));
+  grow_cherry_at_beginning(&global, (void*)&block, sizeof(block));
   return alloc_addr;
 }
 
@@ -161,7 +161,7 @@ Rame* grow_first_rame(){
     return initial;
 }
 
-void grow_cherry_at_beginning(Rame* beginning, void* cherry, size_t cherry_size){
+void grow_cherry_at_beginning(Rame** beginning, void* cherry, size_t cherry_size){
 
     Rame* new = make_rame();
 
@@ -169,8 +169,8 @@ void grow_cherry_at_beginning(Rame* beginning, void* cherry, size_t cherry_size)
     memcpy(_cherry_loc, cherry, cherry_size);
 
     new->data = _cherry_loc;
-    new->next = beginning;
-    beginning = new;
+    new->next = (* beginning);
+    (* beginning) = new;
 }
 
 void grow_cherry_after_cherry(Rame* cherry_on_rame, void* cherry, size_t cherry_size) {
@@ -196,11 +196,11 @@ void for_each_cherry(Rame* beginning, void (*cherry_callback)(void*)){
     }
 }
 
-Rame* find_rame(Rame* beginning, int (*cherry_callback)(void*)){
+Rame* find_rame(Rame** beginning, int (*cherry_callback)(void*)){
     /* Assertion of the rame being initialized or not. */
-    assert(beginning);
+    assert(*beginning);
 
-    for(Rame* temp = beginning;temp;temp = temp->next) {
+    for(Rame* temp = (*beginning);temp;temp = temp->next) {
         if(cherry_callback(temp->data)){
             return temp;
         }
@@ -225,24 +225,24 @@ void pick_cherry(Rame* beginning, void* cherry){
     }
 }
 
-void pick_all_cherries(Rame* beginning){
+void pick_all_cherries(){
     /* Assertion of the rame being initialized or not. */
-    assert(beginning);
+    assert(global);
     if (system_free == NULL) {
         system_free = dlsym(RTLD_NEXT, "free");
     }
     /* Free all cherries from rames */
-    for_each_cherry(beginning, system_free);
+    for_each_cherry(global, system_free);
 
     /* Free all rames */
-    Rame* current = beginning;
+    Rame* current = global;
     Rame* next;
-    while (!current){
+    while (current){
         next = current->next;
         system_free(current);
         current = next;
     }
-    beginning = NULL;
+    global = NULL;
 }
 
 

@@ -187,7 +187,7 @@ Rame* grow_first_rame();
  * @param cherry - The element to be written inside Rame
  * @param cherry_size - Size of the element to be written
  */
-void grow_cherry_at_beginning(Rame* beginning, void* cherry, size_t cherry_size);
+void grow_cherry_at_beginning(Rame** beginning, void* cherry, size_t cherry_size);
 
 /** Grow a cherry in the middle of other cherries
  *
@@ -212,7 +212,7 @@ void for_each_cherry(Rame* beginning, void (*cherry_callback)(void*));
  * May be a comparison.
  * @return Rame* - The rame which matched the condition of the callback.
  */
-Rame* find_rame(Rame* beginning, int (*cherry_callback)(void*));
+Rame* find_rame(Rame** beginning, int (*cherry_callback)(void*));
 
 
 /** Free a particular cherry
@@ -226,9 +226,8 @@ void pick_cherry(Rame* beginning, void* cherry);
 
 /** Pick all cherries from all rames (Free everything)
  *
- * @param beginning - Reference to the beginning of the Global Rame
  */
-void pick_all_cherries(Rame* beginning);
+void pick_all_cherries();
 
 /** End recording, print all leftovers */
 #define C_MEM_END_PRINT_LEFT                                                   \
@@ -236,9 +235,9 @@ void pick_all_cherries(Rame* beginning);
   list_clear(GLOBAL_LIST);
 
 /** End recording, print all memory data */
-#define C_MEM_END_PRINT_ALL                                                    \
-  c_mem_emit_data(TRUE);                                          \
-
+#define C_MEM_END_PRINT_ALL                    \
+  c_mem_emit_data(TRUE);                       \
+  pick_all_cherries();                         \
 
 /** ALLOCATORS REPLACED WITH C_MEM_DMA FUNCTIONS
  *

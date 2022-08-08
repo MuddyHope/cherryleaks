@@ -16,6 +16,7 @@ int main(void)
     v1.x = 15;
     v1.y = 14;
     void * h = malloc(100);
+    void * bar = malloc(300);
 
 
     C_MEM_END_PRINT_ALL
