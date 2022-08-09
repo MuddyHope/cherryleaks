@@ -2,7 +2,7 @@
  * @file c-mem.c
  * @author Vasily Davydov 
  * @brief 
- * @version 0.1
+ * @version 0.2
  * @date 2022-08-02
  * 
  * @copyright Copyright (c) 2022
@@ -17,7 +17,7 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
    if (system_malloc == NULL) {
         system_malloc = dlsym(RTLD_NEXT, "malloc");
     }
-  void *alloc_addr = system_malloc(amount);
+  alloc_addr = system_malloc(amount);
   assert(alloc_addr);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
@@ -119,18 +119,18 @@ int c_mem_generate_message(c_mem_entity *block, char *buffer) {
 
 void c_mem_emit_data(uint8_t flag) {
   char buffer[C_MEM_BUFFER_INTERNAL_SIZE] = {0};
-  c_mem_entity *blcok_iter;
+  c_mem_entity *block_iter;
     Rame* temp = global;
     for(temp;temp;temp = temp->next) {
-    blcok_iter = ((c_mem_entity *)temp->data);
-    const size_t bufferSize = c_mem_generate_message(blcok_iter, buffer);
+        block_iter = ((c_mem_entity *)temp->data);
+    const size_t bufferSize = c_mem_generate_message(block_iter, buffer);
     if (bufferSize) {
       switch (flag) {
       case TRUE:
         printf("%.*s\n", (int)bufferSize, buffer);
         break;
       case FALSE:
-        if (blcok_iter->alloc_type != FREED) {
+        if (block_iter->alloc_type != FREED) {
           printf("%.*s\n", (int)bufferSize, buffer);
         }
         break;

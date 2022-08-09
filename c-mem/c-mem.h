@@ -1,7 +1,7 @@
 /**
  * @file c-mem.h
  * @author Vasily Davydov
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-01
  *
  * @copyright Copyright (c) 2022
