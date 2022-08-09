@@ -20,17 +20,59 @@
 extern "C" {
 #endif
 
-#include "list.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dlfcn.h>
 #include <stddef.h>
 #include <assert.h>
 #include <string.h>
 
+#ifdef __MACH__
+
+#include <dlfcn.h>
+
 void *(*system_malloc)(size_t) = NULL;
+//TODO: remove attributes when they are used
+__attribute__((unused)) void *(*system_realloc)(void*, size_t) = NULL;
+__attribute__((unused)) void *(*system_calloc)(size_t) = NULL;
 void (*system_free)(void*) = NULL;
+
+/** Generating system malloc
+ *
+ * @param size - the size of the system allocation
+ * @return - pointer to allocation
+ * */
+void *gen_sys_malloc_osx(size_t);
+
+/* Generating system realloc */
+__attribute__((unused)) void gen_sys_realloc_osx(); //TODO: remove attributes when they are used
+
+/* Generating system calloc */
+__attribute__((unused)) void gen_sys_calloc_osx(); //TODO: remove attributes when they are used
+
+/** Generating system free
+ * @param pointer - pointer to be freed
+ * */
+void gen_sys_free_osx(void*);
+
+/* Calling system malloc */
+#define SYS_MALLOC(n) gen_sys_malloc_osx(n)
+
+/* Calling system free */
+#define SYS_FREE(p) gen_sys_free_osx(p)
+
+#endif /*__MACH__*/
+
+#ifdef __linux__
+#include <malloc.h>
+/**
+ * Using __malloc_hook, __realloc_hook, __free_hook
+ * */
+
+#define SYS_MALLOC(n) //TODO
+
+#define SYS_FREE(p) //TODO
+#endif /*__linux__*/
 
 /** Buffer length reserved for internal message */
 #define C_MEM_BUFFER_INTERNAL_SIZE 1500

@@ -12,17 +12,41 @@
 
 Rame * global = NULL;
 
+#ifdef __MACH__
+/*
+ * Using RTLD_NEXT to avoid dlopen() calls in system
+ * allocation functions.
+ */
+void *gen_sys_malloc_osx(size_t n){
+    system_malloc = dlsym(RTLD_NEXT, "malloc");
+    assert(system_malloc);
+    return system_malloc(n);
+}
+
+__attribute__((unused)) void gen_sys_realloc_osx(){
+    //TODO
+}
+
+__attribute__((unused)) void gen_sys_calloc_osx(){
+    //TODO
+}
+void gen_sys_free_osx(void* pointer){
+    system_free = dlsym(RTLD_NEXT, "free");
+    assert(system_free);
+    system_free(pointer);
+}
+#endif
+
+
+
 void *memory_data_malloc(size_t amount, char *file, size_t line) {
-   void *alloc_addr = NULL;
-   if (system_malloc == NULL) {
-        system_malloc = dlsym(RTLD_NEXT, "malloc");
-    }
-  alloc_addr = system_malloc(amount);
-  assert(alloc_addr);
-  c_mem_entity block = create_block();
-  block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
-  grow_cherry_at_beginning(&global, (void*)&block, sizeof(block));
-  return alloc_addr;
+    void *alloc_addr = NULL;
+    alloc_addr = SYS_MALLOC(amount);
+    assert(alloc_addr);
+    c_mem_entity block = create_block();
+    block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
+    grow_cherry_at_beginning(&global, (void*)&block, sizeof(block));
+    return alloc_addr;
 }
 
 /* Still needs to be implemented
@@ -64,10 +88,7 @@ void memory_data_free(void *ptr, char *file, size_t line) {
     buffer = ((c_mem_entity *)temp->data);
     if (buffer->address == ptr && buffer->alloc_type != FREED) {
       block_value(buffer, ptr, C_MEM_BLOCK_SIZE_INIT, file, line, FREED);
-        if (system_free == NULL) {
-            system_free = dlsym(RTLD_NEXT, "free");
-        }
-        system_free(ptr);
+        SYS_FREE(ptr);
       break;
     }
   }
@@ -104,8 +125,9 @@ const char *buffer_to_prt(int code) {
     return C_MEM_BUFFER_MESSAGE_TYPE[CALLOCATED];
   case FREED:
     return C_MEM_BUFFER_MESSAGE_TYPE[FREED];
+  default:
+    return C_MEM_BUFFER_MESSAGE_TYPE[4];
   }
-  return C_MEM_BUFFER_MESSAGE_TYPE[4];
 }
 
 int c_mem_generate_message(c_mem_entity *block, char *buffer) {
@@ -143,17 +165,11 @@ void c_mem_emit_data(uint8_t flag) {
 }
 
 static Rame* make_rame(){
-    if (system_malloc == NULL) {
-        system_malloc = dlsym(RTLD_NEXT, "malloc");
-    }
-    return (Rame*) system_malloc(sizeof(Rame));
+    return (Rame*) SYS_MALLOC(sizeof(Rame));
 }
 
 static void* make_cherry(size_t _cherry_size){
-    if (system_malloc == NULL) {
-        system_malloc = dlsym(RTLD_NEXT, "malloc");
-    }
-    return system_malloc(_cherry_size);
+    return SYS_MALLOC(_cherry_size);
 }
 
 Rame* grow_first_rame(){
@@ -216,11 +232,8 @@ void pick_cherry(Rame* beginning, void* cherry){
     for(temp = beginning;temp;temp = temp->next) {
         if(temp->data == cherry){
             prev->next = temp->next;
-            if (system_free == NULL) {
-                system_free = dlsym(RTLD_NEXT, "free");
-            }
-            system_free(temp->data);
-            system_free(temp);
+            SYS_FREE(temp->data);
+            SYS_FREE(temp);
             return;
         }
         prev = temp;
@@ -241,7 +254,7 @@ void pick_all_cherries(){
     Rame* next;
     while (current){
         next = current->next;
-        system_free(current);
+        SYS_FREE(current);
         current = next;
     }
     global = NULL;
