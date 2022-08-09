@@ -13,11 +13,12 @@
 Rame * global = NULL;
 
 void *memory_data_malloc(size_t amount, char *file, size_t line) {
-    if (system_malloc == NULL) {
+   void *alloc_addr = NULL;
+   if (system_malloc == NULL) {
         system_malloc = dlsym(RTLD_NEXT, "malloc");
     }
   void *alloc_addr = system_malloc(amount);
-  // TODO: assert address
+  assert(alloc_addr);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
   grow_cherry_at_beginning(&global, (void*)&block, sizeof(block));
@@ -58,6 +59,7 @@ void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
 void memory_data_free(void *ptr, char *file, size_t line) {
   c_mem_entity *buffer;
   Rame* temp = global;
+  assert(temp);
   for(temp;temp;temp = temp->next) {
     buffer = ((c_mem_entity *)temp->data);
     if (buffer->address == ptr && buffer->alloc_type != FREED) {
@@ -68,7 +70,6 @@ void memory_data_free(void *ptr, char *file, size_t line) {
         system_free(ptr);
       break;
     }
-    // TODO: Add empty list error
   }
 }
 

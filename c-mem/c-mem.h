@@ -155,8 +155,9 @@ void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line);
 
 /** Free mem-block entity
  *
- * TODO: add line and file
  * @param ptr - pointer to allocated memory
+ * @param file  - name of the file where freeing is done
+ * @param line - line number where freeing is done
  */
 void memory_data_free(void *ptr, char *file, size_t line);
 
