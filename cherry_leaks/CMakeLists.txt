@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_library(c-mem SHARED c-mem.c)
 
-#install(TARGETS c-mem DESTINATION lib)
-#install(FILES c-mem DESTINATION include)
+#install(TARGETS cherry_leaks DESTINATION lib)
+#install(FILES cherry_leaks DESTINATION include)

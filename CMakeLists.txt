@@ -6,15 +6,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 enable_testing()
 
-add_subdirectory(c-mem)
+add_subdirectory(cherry_leaks)
 
 add_subdirectory(googletest)
 
 add_executable(hello-world testing.c)
 
-target_link_libraries(hello-world PUBLIC c-mem)
+target_link_libraries(hello-world PUBLIC cherry_leaks)
 
-target_include_directories(hello-world PRIVATE c-mem)
+target_include_directories(hello-world PRIVATE cherry_leaks)
 
 
 add_subdirectory(test)

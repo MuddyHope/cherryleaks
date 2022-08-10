@@ -33,6 +33,6 @@ jobs:
       run: cmake --build ${{github.workspace}}/cmake-build-debug --target hello-world -- -j 9
 
     - name: Build & Run C_MEM_DMA_TESTS
-      run: cmake --build ${{github.workspace}}/cmake-build-debug --target c-mem-dma-test -- -j 9 && ${{github.workspace}}/cmake-build-debug/test/c-mem-dma-test
+      run: cmake --build ${{github.workspace}}/cmake-build-debug --target cherry_leaks-dma-test -- -j 9 && ${{github.workspace}}/cmake-build-debug/test/cherry_leaks-dma-test
 
       

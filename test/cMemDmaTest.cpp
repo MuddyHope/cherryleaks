@@ -1,5 +1,5 @@
 /**
- * @file c-mem-dma-test.cpp
+ * @file cherry_leaks-dma-test.cpp
  * @author Vasily Davydov
  * @version 0.1
  * @date 2022-07-20
@@ -9,15 +9,15 @@
  * BASIC TESTS FOR C-MEM-DMA FUNCTIONS
  *
  * These tests are made to test basic functionality
- * inside the dma functions, such as creating the c-mem-block,
- * inserting right values inside the c-mem-entity structure and
+ * inside the dma functions, such as creating the cherry_leaks-block,
+ * inserting right values inside the cherry_leaks-entity structure and
  * work according to different parameters.
  *
  */
 
 #include <gtest/gtest.h>
 extern "C" {
-#include "../c-mem/c-mem.h"
+#include "../cherry_leaks//c-mem.h"
 }
 /** MEMORY_DATA_MALLOC */
 TEST(cMemDmaTest, test_malloc_struct_internal) {

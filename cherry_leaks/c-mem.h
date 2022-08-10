@@ -1,5 +1,5 @@
 /**
- * @file c-mem.h
+ * @file cherry_leaks.h
  * @author Vasily Davydov
  * @version 0.2
  * @date 2022-06-01
@@ -78,31 +78,31 @@ void gen_sys_free_osx(void *);
 /** Buffer length reserved for internal message */
 #define C_MEM_BUFFER_INTERNAL_SIZE 1500
 
-/** A malloc type of memory inside of c-mem-entity */
+/** A malloc type of memory inside of cherry_leaks-entity */
 #define MALLOCATED 0
 
-/** A realloc type of memory inside of c-mem-entity */
+/** A realloc type of memory inside of cherry_leaks-entity */
 #define REALLOACTED 1
 
-/** A calloc type of memory inside of c-mem-entity */
+/** A calloc type of memory inside of cherry_leaks-entity */
 #define CALLOCATED 2
 
-/** A freed type of memory inside of c-mem-entity */
+/** A freed type of memory inside of cherry_leaks-entity */
 #define FREED 3
 
-/** An initial value for block address in c-mem-entity structure */
+/** An initial value for block address in cherry_leaks-entity structure */
 #define C_MEM_BLOCK_ADDR_INIT NULL
 
-/** An initial value for block size in c-mem-entity structure */
+/** An initial value for block size in cherry_leaks-entity structure */
 #define C_MEM_BLOCK_SIZE_INIT 0
 
-/** An initial value for file in c-mem-entity structure */
+/** An initial value for file in cherry_leaks-entity structure */
 #define C_MEM_BLOCK_FILE_INIT NULL
 
-/** An initial value for line in c-mem-entity structure */
+/** An initial value for line in cherry_leaks-entity structure */
 #define C_MEM_BLOCK_LINE_INIT 0
 
-/** An initial value for allocation type in c-mem-entity structure */
+/** An initial value for allocation type in cherry_leaks-entity structure */
 #define C_MEM_BLOCK_ALLOC_TYPE_INIT 255
 
 /** General structure for storing data of allocations
@@ -282,7 +282,7 @@ void pick_all_cherries();
 
 /** ALLOCATORS REPLACED WITH C_MEM_DMA FUNCTIONS
  *
- *  Replacing memory allocation functions, with c-mem-dma functions
+ *  Replacing memory allocation functions, with cherry_leaks-dma functions
  *  in case the program has been started and Global List is initialized.
  * */
 

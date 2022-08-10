@@ -1,5 +1,5 @@
 /**
- * @file c-mem.c
+ * @file cherry_leaks.c
  * @author Vasily Davydov
  * @brief
  * @version 0.2
