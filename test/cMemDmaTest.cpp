@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 extern "C" {
-#include "../cherry_leaks//c-mem.h"
+#include "../cherry_leaks/cherry_leaks.h"
 }
 /** MEMORY_DATA_MALLOC */
 TEST(cMemDmaTest, test_malloc_struct_internal) {
