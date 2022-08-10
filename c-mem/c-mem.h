@@ -12,7 +12,6 @@
 
 // TODO: add proper documentation
 
-
 #ifndef C_MEM_H
 #define C_MEM_H
 
@@ -20,11 +19,11 @@
 extern "C" {
 #endif
 
+#include <assert.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
-#include <assert.h>
 #include <string.h>
 
 #ifdef __MACH__
@@ -32,10 +31,10 @@ extern "C" {
 #include <dlfcn.h>
 
 void *(*system_malloc)(size_t) = NULL;
-//TODO: remove attributes when they are used
-__attribute__((unused)) void *(*system_realloc)(void*, size_t) = NULL;
+// TODO: remove attributes when they are used
+__attribute__((unused)) void *(*system_realloc)(void *, size_t) = NULL;
 __attribute__((unused)) void *(*system_calloc)(size_t) = NULL;
-void (*system_free)(void*) = NULL;
+void (*system_free)(void *) = NULL;
 
 /** Generating system malloc
  *
@@ -45,15 +44,17 @@ void (*system_free)(void*) = NULL;
 void *gen_sys_malloc_osx(size_t);
 
 /* Generating system realloc */
-__attribute__((unused)) void gen_sys_realloc_osx(); //TODO: remove attributes when they are used
+__attribute__((unused)) void
+gen_sys_realloc_osx(); // TODO: remove attributes when they are used
 
 /* Generating system calloc */
-__attribute__((unused)) void gen_sys_calloc_osx(); //TODO: remove attributes when they are used
+__attribute__((unused)) void
+gen_sys_calloc_osx(); // TODO: remove attributes when they are used
 
 /** Generating system free
  * @param pointer - pointer to be freed
  * */
-void gen_sys_free_osx(void*);
+void gen_sys_free_osx(void *);
 
 /* Calling system malloc */
 #define SYS_MALLOC(n) gen_sys_malloc_osx(n)
@@ -69,10 +70,10 @@ void gen_sys_free_osx(void*);
  * Using __malloc_hook, __realloc_hook, __free_hook
  * */
 
-#define SYS_MALLOC(n) //TODO
+#define SYS_MALLOC(n) // TODO
 
-#define SYS_FREE(p) //TODO
-#endif /*__linux__*/
+#define SYS_FREE(p) // TODO
+#endif              /*__linux__*/
 
 /** Buffer length reserved for internal message */
 #define C_MEM_BUFFER_INTERNAL_SIZE 1500
@@ -103,7 +104,6 @@ void gen_sys_free_osx(void*);
 
 /** An initial value for allocation type in c-mem-entity structure */
 #define C_MEM_BLOCK_ALLOC_TYPE_INIT 255
-
 
 /** General structure for storing data of allocations
  *
@@ -212,21 +212,22 @@ void memory_data_free(void *ptr, char *file, size_t line);
 // static list *GLOBAL_LIST = NULL;
 
 /** Initialize the program and start recording */
-#define C_MEM_START                                                            \
+#define C_MEM_START
 
 typedef struct Rame {
-    void* data;
-    struct Rame* next;
-}Rame;
+  void *data;
+  struct Rame *next;
+} Rame;
 
-Rame* grow_first_rame();
+Rame *grow_first_rame();
 /** Assign a new beginning of the rame with cherry allocation
  *
  * @param beginning - Reference to the beginning of the Global Rame
  * @param cherry - The element to be written inside Rame
  * @param cherry_size - Size of the element to be written
  */
-void grow_cherry_at_beginning(Rame** beginning, void* cherry, size_t cherry_size);
+void grow_cherry_at_beginning(Rame **beginning, void *cherry,
+                              size_t cherry_size);
 
 /** Grow a cherry in the middle of other cherries
  *
@@ -235,24 +236,25 @@ void grow_cherry_at_beginning(Rame** beginning, void* cherry, size_t cherry_size
  * @param cherry - The element to be written inside Rame
  * @param cherry_size - Size of the element to be written
  */
-void grow_cherry_after_cherry(Rame* cherry_on_rame, void* cherry, size_t cherry_size);
+void grow_cherry_after_cherry(Rame *cherry_on_rame, void *cherry,
+                              size_t cherry_size);
 
 /** Iterator through rame with a (void) callback
  *
  * @param beginning - Reference to the beginning of the Global Rame
- * @param cherry_callback - a callback with type (void) to be executed on each cherry
+ * @param cherry_callback - a callback with type (void) to be executed on each
+ * cherry
  */
-void for_each_cherry(Rame* beginning, void (*cherry_callback)(void*));
+void for_each_cherry(Rame *beginning, void (*cherry_callback)(void *));
 
 /**
  *
  * @param beginning - Reference to the beginning of the Global Rame
- * @param cherry_callback - a callback with type (int) to be executed on each cherry.
- * May be a comparison.
+ * @param cherry_callback - a callback with type (int) to be executed on each
+ * cherry. May be a comparison.
  * @return Rame* - The rame which matched the condition of the callback.
  */
-Rame* find_rame(Rame** beginning, int (*cherry_callback)(void*));
-
+Rame *find_rame(Rame **beginning, int (*cherry_callback)(void *));
 
 /** Free a particular cherry
  *
@@ -261,7 +263,7 @@ Rame* find_rame(Rame** beginning, int (*cherry_callback)(void*));
  *
  * TODO: return value if not found
  */
-void pick_cherry(Rame* beginning, void* cherry);
+void pick_cherry(Rame *beginning, void *cherry);
 
 /** Pick all cherries from all rames (Free everything)
  *
@@ -270,13 +272,13 @@ void pick_all_cherries();
 
 /** End recording, print all leftovers */
 #define C_MEM_END_PRINT_LEFT                                                   \
-  c_mem_emit_data(FALSE);                                         \
+  c_mem_emit_data(FALSE);                                                      \
   list_clear(GLOBAL_LIST);
 
 /** End recording, print all memory data */
-#define C_MEM_END_PRINT_ALL                    \
-  c_mem_emit_data(TRUE);                       \
-  pick_all_cherries();                         \
+#define C_MEM_END_PRINT_ALL                                                    \
+  c_mem_emit_data(TRUE);                                                       \
+  pick_all_cherries();
 
 /** ALLOCATORS REPLACED WITH C_MEM_DMA FUNCTIONS
  *
@@ -285,11 +287,11 @@ void pick_all_cherries();
  * */
 
 /*
- * In case of mac: https://stackoverflow.com/questions/929893/how-can-i-override-malloc-calloc-free-etc-under-os-x
+ * In case of mac:
+ * https://stackoverflow.com/questions/929893/how-can-i-override-malloc-calloc-free-etc-under-os-x
  * In case of Linux: malloc hooks
  *
  * */
-
 
 #define malloc(n) memory_data_malloc(n, __FILE__, __LINE__)
 #define realloc(ptr, n) memory_data_realloc(ptr, n, __FILE__, __LINE__)
