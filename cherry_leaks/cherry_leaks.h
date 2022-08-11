@@ -9,7 +9,7 @@
  * General C-MEM lib header file
  *
  */
-
+#define _GNU_SOURCE
 // TODO: add proper documentation
 
 #ifndef C_MEM_H
@@ -26,8 +26,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef __MACH__
-
+#if  defined(__MACH__) || defined(__linux__)
 #include <dlfcn.h>
 
 void *(*system_malloc)(size_t) = NULL;
@@ -62,18 +61,7 @@ void gen_sys_free_osx(void *);
 /* Calling system free */
 #define SYS_FREE(p) gen_sys_free_osx(p)
 
-#endif /*__MACH__*/
-
-#ifdef __linux__
-#include <malloc.h>
-/**
- * Using __malloc_hook, __realloc_hook, __free_hook
- * */
-
-#define SYS_MALLOC(n) // TODO
-
-#define SYS_FREE(p) // TODO
-#endif              /*__linux__*/
+#endif /*__MACH__ || __linux__*/
 
 /** Buffer length reserved for internal message */
 #define C_MEM_BUFFER_INTERNAL_SIZE 1500

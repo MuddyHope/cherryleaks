@@ -12,7 +12,7 @@
 
 Rame *global = NULL;
 
-#ifdef __MACH__
+#if defined(__MACH__) || defined(__linux__)
 /*
  * Using RTLD_NEXT to avoid dlopen() calls in system
  * allocation functions.
