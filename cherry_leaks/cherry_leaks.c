@@ -29,9 +29,6 @@ void *gen_sys_realloc_unix(void *pointer, size_t n) {
   return system_realloc(pointer, n);
 }
 
-__attribute__((unused)) void gen_sys_calloc_unix() {
-  // TODO
-}
 void gen_sys_free_unix(void *pointer) {
   system_free = dlsym(RTLD_NEXT, "free");
   assert(system_free);
@@ -55,7 +52,6 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
   Rame *temp = global;
   assert(temp);
   alloc_addr = SYS_REALLOC(ptr, amount);
-
   /**
    * Reallocation has three case scenarios[&]:
    *
@@ -71,7 +67,6 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
    *
    * [&] https://en.cppreference.com/w/c/memory/realloc
    * */
-
   /* CASE 1 */
   if(alloc_addr == NULL) return alloc_addr;
   /* CASE 2 */
@@ -103,15 +98,15 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
       }
   return alloc_addr;
 }
-/*
+
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
-  void *alloc_addr = calloc(amount, size);
+  void *alloc_addr = SYS_MALLOC(amount * size);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, CALLOCATED);
-  list_push_back(l, (void *)&block, sizeof(block));
+  grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
   return alloc_addr;
 }
-*/
+
 void memory_data_free(void *ptr, char *file, size_t line) {
   c_mem_entity *buffer;
   Rame *temp = global;

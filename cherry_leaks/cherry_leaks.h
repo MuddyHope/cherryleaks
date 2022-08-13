@@ -46,10 +46,6 @@ void *gen_sys_malloc_unix(size_t);
 
 void *gen_sys_realloc_unix(void*, size_t); // TODO: remove attributes when they are used
 
-/* Generating system calloc */
-__attribute__((unused)) void
-gen_sys_calloc_unix(); // TODO: remove attributes when they are used
-
 /** Generating system free
  * @param pointer - pointer to be freed
  * */
