@@ -17,20 +17,20 @@ Rame *global = NULL;
  * Using RTLD_NEXT to avoid dlopen() calls in system
  * allocation functions.
  */
-void *gen_sys_malloc_osx(size_t n) {
+void *gen_sys_malloc_unix(size_t n) {
   system_malloc = dlsym(RTLD_NEXT, "malloc");
   assert(system_malloc);
   return system_malloc(n);
 }
 
-__attribute__((unused)) void gen_sys_realloc_osx() {
+__attribute__((unused)) void gen_sys_realloc_unix() {
   // TODO
 }
 
-__attribute__((unused)) void gen_sys_calloc_osx() {
+__attribute__((unused)) void gen_sys_calloc_unix() {
   // TODO
 }
-void gen_sys_free_osx(void *pointer) {
+void gen_sys_free_unix(void *pointer) {
   system_free = dlsym(RTLD_NEXT, "free");
   assert(system_free);
   system_free(pointer);

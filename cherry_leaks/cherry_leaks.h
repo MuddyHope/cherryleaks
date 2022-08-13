@@ -40,26 +40,26 @@ void (*system_free)(void *) = NULL;
  * @param size - the size of the system allocation
  * @return - pointer to allocation
  * */
-void *gen_sys_malloc_osx(size_t);
+void *gen_sys_malloc_unix(size_t);
 
 /* Generating system realloc */
 __attribute__((unused)) void
-gen_sys_realloc_osx(); // TODO: remove attributes when they are used
+gen_sys_realloc_unix(); // TODO: remove attributes when they are used
 
 /* Generating system calloc */
 __attribute__((unused)) void
-gen_sys_calloc_osx(); // TODO: remove attributes when they are used
+gen_sys_calloc_unix(); // TODO: remove attributes when they are used
 
 /** Generating system free
  * @param pointer - pointer to be freed
  * */
-void gen_sys_free_osx(void *);
+void gen_sys_free_unix(void *);
 
 /* Calling system malloc */
-#define SYS_MALLOC(n) gen_sys_malloc_osx(n)
+#define SYS_MALLOC(n) gen_sys_malloc_unix(n)
 
 /* Calling system free */
-#define SYS_FREE(p) gen_sys_free_osx(p)
+#define SYS_FREE(p) gen_sys_free_unix(p)
 
 #endif /*__MACH__ || __linux__*/
 
