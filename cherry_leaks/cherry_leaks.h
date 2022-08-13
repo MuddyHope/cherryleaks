@@ -30,9 +30,7 @@ extern "C" {
 #include <dlfcn.h>
 
 void *(*system_malloc)(size_t) = NULL;
-// TODO: remove attributes when they are used
-__attribute__((unused)) void *(*system_realloc)(void *, size_t) = NULL;
-__attribute__((unused)) void *(*system_calloc)(size_t) = NULL;
+void *(*system_realloc)(void *, size_t) = NULL;
 void (*system_free)(void *) = NULL;
 
 /** Generating system malloc
