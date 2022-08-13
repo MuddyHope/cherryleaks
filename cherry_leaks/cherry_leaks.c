@@ -129,7 +129,7 @@ const char *buffer_to_prt(int code) {
 }
 
 int c_mem_generate_message(c_mem_entity *block, char *buffer) {
-  return snprintf(buffer, C_MEM_BUFFER_INTERNAL_SIZE,
+  return snprintf(buffer, CHERRYLEAK_MESSAGE_BUFFER_MAX_LENGTH,
                   // TODO: Change the format for current message
                   "MEM-Type: [%s] At the address: [%p] with size: [%lu] in "
                   "file: [%s] on line: [%lu]",
@@ -138,7 +138,7 @@ int c_mem_generate_message(c_mem_entity *block, char *buffer) {
 }
 
 void c_mem_emit_data(uint8_t flag) {
-  char buffer[C_MEM_BUFFER_INTERNAL_SIZE] = {0};
+  char buffer[CHERRYLEAK_MESSAGE_BUFFER_MAX_LENGTH] = {0};
   c_mem_entity *block_iter;
   Rame *temp = global;
   for (temp; temp; temp = temp->next) {

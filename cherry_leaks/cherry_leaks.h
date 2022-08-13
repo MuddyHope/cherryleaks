@@ -64,7 +64,7 @@ void gen_sys_free_unix(void *);
 #endif /*__MACH__ || __linux__*/
 
 /** Buffer length reserved for internal message */
-#define C_MEM_BUFFER_INTERNAL_SIZE 1500
+#define CHERRYLEAK_MESSAGE_BUFFER_MAX_LENGTH 1500
 
 /** A malloc type of memory inside of cherry_leaks-entity */
 #define MALLOCATED 0
@@ -284,7 +284,7 @@ void pick_all_cherries();
 #define malloc(n) memory_data_malloc(n, __FILE__, __LINE__)
 #define realloc(ptr, n) memory_data_realloc(ptr, n, __FILE__, __LINE__)
 #define calloc(n, size) memory_data_calloc(n, size, __FILE__, __LINE__)
-#define free(addr) memory_data_free(addr, __FILE__, __LINE__) free(addr)
+#define free(addr) memory_data_free(addr, __FILE__, __LINE__)
 
 #ifdef _cplusplus
 }
