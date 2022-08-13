@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(c-mem-dma-test cMemDmaTest.cpp)
 target_link_libraries(c-mem-dma-test PUBLIC
         gtest_main
-        c-mem)
+        cherry_leaks ${CMAKE_DL_LIBS})
 
 add_test(
         NAME c-mem-dma-test
