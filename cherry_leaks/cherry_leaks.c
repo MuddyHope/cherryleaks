@@ -23,8 +23,10 @@ void *gen_sys_malloc_unix(size_t n) {
   return system_malloc(n);
 }
 
-__attribute__((unused)) void gen_sys_realloc_unix() {
-  // TODO
+void *gen_sys_realloc_unix(void *pointer, size_t n) {
+  system_realloc = dlsym(RTLD_NEXT, "realloc");
+  assert(system_realloc);
+  return system_realloc(pointer, n);
 }
 
 __attribute__((unused)) void gen_sys_calloc_unix() {
@@ -47,29 +49,61 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
   return alloc_addr;
 }
 
-/* Still needs to be implemented
 void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
   void *alloc_addr;
   c_mem_entity *buffer;
+  Rame *temp = global;
+  assert(temp);
+  alloc_addr = SYS_REALLOC(ptr, amount);
 
-  alloc_addr = realloc(ptr, amount);
-  //  Search for this address in GLOBAL_LIST
-  //  If it is there, replace with new values,
-  //  else, add new mem-block
-  for (element *p = l->first; p; p = p->next) {
-    buffer = ((c_mem_entity *)p->content);
-    if (buffer->address == ptr) {
-      block_value(buffer, alloc_addr, amount, file, line, REALLOACTED);
-      return alloc_addr;
-    }
-  }
+  /**
+   * Reallocation has three case scenarios[&]:
+   *
+   * 1. If there is not enough memory, the old memory block is not freed and
+   * null pointer is returned.
+   *
+   * 2. Expanding or contracting the existing area pointed to by ptr, if possible.
+   * The contents of the area remain unchanged up to the lesser of the new and old
+   * sizes. If the area is expanded, the contents of the new part of the array are undefined.
+   *
+   * 3. Allocating a new memory block of size new_size bytes, copying memory area with
+   * size equal the lesser of the new and the old sizes, and freeing the old block.
+   *
+   * [&] https://en.cppreference.com/w/c/memory/realloc
+   * */
 
+  /* CASE 1 */
+  if(alloc_addr == NULL) return alloc_addr;
+  /* CASE 2 */
+  if(alloc_addr == ptr) goto expand_old;
+  /* CASE 3 */
   c_mem_entity new_block = create_block();
   block_value(&new_block, alloc_addr, amount, file, line, REALLOACTED);
-  list_push_back(l, (void *)&new_block, sizeof(new_block));
+  grow_cherry_at_beginning(&global, (void *)&new_block, sizeof(new_block));
+  temp = global;
+  Rame *prev;
+  for (temp; temp; temp = temp->next) {
+      buffer = ((c_mem_entity *) temp->data);
+      if (buffer->address == ptr){
+          prev->next = temp->next;
+          SYS_FREE(temp->data);
+          SYS_FREE(temp);
+          return alloc_addr;
+      }
+      prev = temp;
+  }
+
+  expand_old:
+      for (temp; temp; temp = temp->next) {
+        buffer = ((c_mem_entity *)temp->data);
+        if (buffer->address == alloc_addr) {
+          block_value(buffer, alloc_addr, amount, file, line, REALLOACTED);
+          return alloc_addr;
+        }
+      }
   return alloc_addr;
 }
-
+/*
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
   void *alloc_addr = calloc(amount, size);
   c_mem_entity block = create_block();

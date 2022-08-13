@@ -43,8 +43,8 @@ void (*system_free)(void *) = NULL;
 void *gen_sys_malloc_unix(size_t);
 
 /* Generating system realloc */
-__attribute__((unused)) void
-gen_sys_realloc_unix(); // TODO: remove attributes when they are used
+
+void *gen_sys_realloc_unix(void*, size_t); // TODO: remove attributes when they are used
 
 /* Generating system calloc */
 __attribute__((unused)) void
@@ -57,6 +57,9 @@ void gen_sys_free_unix(void *);
 
 /* Calling system malloc */
 #define SYS_MALLOC(n) gen_sys_malloc_unix(n)
+
+/* Calling system realloc */
+#define SYS_REALLOC(ptr, n) gen_sys_realloc_unix(ptr, n)
 
 /* Calling system free */
 #define SYS_FREE(p) gen_sys_free_unix(p)
