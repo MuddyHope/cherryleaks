@@ -29,6 +29,12 @@ void *gen_sys_realloc_unix(void *pointer, size_t n) {
   return system_realloc(pointer, n);
 }
 
+void *gen_sys_calloc_unix(size_t amount, size_t n) {
+    system_calloc = dlsym(RTLD_NEXT, "calloc");
+    assert(system_calloc);
+    return system_calloc(amount, n);
+}
+
 void gen_sys_free_unix(void *pointer) {
   system_free = dlsym(RTLD_NEXT, "free");
   assert(system_free);
@@ -100,7 +106,7 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
 }
 
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
-  void *alloc_addr = SYS_MALLOC(amount * size);
+  void *alloc_addr = SYS_CALLOC(amount, size);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, CALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));

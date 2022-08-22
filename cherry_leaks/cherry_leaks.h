@@ -31,6 +31,7 @@ extern "C" {
 
 void *(*system_malloc)(size_t) = NULL;
 void *(*system_realloc)(void *, size_t) = NULL;
+void *(*system_calloc)(size_t, size_t) = NULL;
 void (*system_free)(void *) = NULL;
 
 /** Generating system malloc
@@ -42,7 +43,11 @@ void *gen_sys_malloc_unix(size_t);
 
 /* Generating system realloc */
 
-void *gen_sys_realloc_unix(void*, size_t); // TODO: remove attributes when they are used
+void *gen_sys_realloc_unix(void*, size_t);
+
+/* Generating system calloc */
+
+void *gen_sys_calloc_unix(size_t, size_t);
 
 /** Generating system free
  * @param pointer - pointer to be freed
@@ -54,6 +59,9 @@ void gen_sys_free_unix(void *);
 
 /* Calling system realloc */
 #define SYS_REALLOC(ptr, n) gen_sys_realloc_unix(ptr, n)
+
+/* Calling system calloc */
+#define SYS_CALLOC(s, n) gen_sys_calloc_unix(s, n)
 
 /* Calling system free */
 #define SYS_FREE(p) gen_sys_free_unix(p)
