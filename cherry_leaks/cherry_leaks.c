@@ -43,12 +43,14 @@ void gen_sys_free_unix(void *pointer) {
 #endif
 
 void *memory_data_malloc(size_t amount, char *file, size_t line) {
+
   void *alloc_addr = NULL;
   alloc_addr = SYS_MALLOC(amount);
   assert(alloc_addr);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
+
   return alloc_addr;
 }
 
@@ -204,7 +206,7 @@ static void *make_cherry(size_t _cherry_size) {
 }
 
 Rame *grow_first_rame() {
-  Rame *initial;
+  Rame *initial = NULL;
   initial->next = NULL;
   initial->data = NULL;
   return initial;
@@ -212,7 +214,6 @@ Rame *grow_first_rame() {
 
 void grow_cherry_at_beginning(Rame **beginning, void *cherry,
                               size_t cherry_size) {
-
   Rame *new = make_rame();
 
   void *_cherry_loc = make_cherry(cherry_size);

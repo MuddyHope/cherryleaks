@@ -25,6 +25,12 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+
+#define PTHREAD_MUTEX_INIT(mutex, mutexattr)                                   \
+  if (!(mutex)) {                                                              \
+    pthread_mutex_init(mutex, mutexattr);                                      \
+  }
 
 #if  defined(__MACH__) || defined(__linux__)
 #include <dlfcn.h>
