@@ -10,7 +10,7 @@ typedef struct vector{
     int y;
 }VEC;
 
-int main(void)
+int main (void)
 {
     VEC v1;
     v1.x = 15;

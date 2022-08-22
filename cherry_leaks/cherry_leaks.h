@@ -27,6 +27,14 @@ extern "C" {
 #include <string.h>
 #include <pthread.h>
 
+/** Initialization */
+#if defined(__GNUC__) || defined(__clang__)
+
+void cherryleaks_init (void) __attribute__ ((constructor(1)));
+void cherryleaks_exit(void) __attribute__ ((destructor(1)));
+
+#endif /* __GNUC__ || __clang__ */
+
 #define PTHREAD_MUTEX_INIT(mutex, mutexattr)                                   \
   if (!(mutex)) {                                                              \
     pthread_mutex_init(mutex, mutexattr);                                      \

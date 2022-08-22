@@ -12,6 +12,12 @@
 
 Rame *global = NULL;
 
+#if defined(__GNUC__) || defined(__clang__)
+
+void cherryleaks_init (void) {}
+void cherryleaks_exit (void) {}
+
+#endif /* __GNUC__ || __clang__ */
 #if defined(__MACH__) || defined(__linux__)
 /*
  * Using RTLD_NEXT to avoid dlopen() calls in system
