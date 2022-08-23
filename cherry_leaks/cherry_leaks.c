@@ -10,12 +10,19 @@
  */
 #include "cherry_leaks.h"
 
-Rame *global = NULL;
+Rame *global;
+pthread_mutex_t global_lock = PTHREAD_MUTEX_INITIALIZER;
 
 #if defined(__GNUC__) || defined(__clang__)
 
-void cherryleaks_init (void) {}
-void cherryleaks_exit (void) {}
+void cherryleaks_init (void) {
+    global = NULL;
+    PTHREAD_MUTEX_INIT(&global_lock, NULL);
+}
+void cherryleaks_exit (void) {
+    C_MEM_END_PRINT_ALL;
+    PTHREAD_MUTEX_EXIT(&global_lock);
+}
 
 #endif /* __GNUC__ || __clang__ */
 #if defined(__MACH__) || defined(__linux__)
@@ -52,11 +59,12 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
 
   void *alloc_addr = NULL;
   alloc_addr = SYS_MALLOC(amount);
+    pthread_mutex_lock(&global_lock);
   assert(alloc_addr);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
-
+    pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
@@ -66,6 +74,7 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
   Rame *temp = global;
   assert(temp);
   alloc_addr = SYS_REALLOC(ptr, amount);
+    pthread_mutex_lock(&global_lock);
   /**
    * Reallocation has three case scenarios[&]:
    *
@@ -110,18 +119,22 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
           return alloc_addr;
         }
       }
+    pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
   void *alloc_addr = SYS_CALLOC(amount, size);
+    pthread_mutex_lock(&global_lock);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, CALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
+    pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
 void memory_data_free(void *ptr, char *file, size_t line) {
+    //TODO: make free multithreadsafe
   c_mem_entity *buffer;
   Rame *temp = global;
   assert(temp);
@@ -129,6 +142,7 @@ void memory_data_free(void *ptr, char *file, size_t line) {
     buffer = ((c_mem_entity *)temp->data);
     if (buffer->address == ptr && buffer->alloc_type != FREED) {
       block_value(buffer, ptr, C_MEM_BLOCK_SIZE_INIT, file, line, FREED);
+
       SYS_FREE(ptr);
       break;
     }

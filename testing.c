@@ -9,7 +9,6 @@ typedef struct vector{
     int x;
     int y;
 }VEC;
-
 int main (void)
 {
     VEC v1;
@@ -21,7 +20,5 @@ int main (void)
     bar = realloc(bar, 400);
 
     free(h);
-
-    C_MEM_END_PRINT_ALL
     return 0;
 }
