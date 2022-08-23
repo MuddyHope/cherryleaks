@@ -11,17 +11,17 @@
 #include "cherry_leaks.h"
 
 Rame *global;
-pthread_mutex_t global_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t global_lock;
 
 #if defined(__GNUC__) || defined(__clang__)
 
-void cherryleaks_init (void) {
-    global = NULL;
-    PTHREAD_MUTEX_INIT(&global_lock, NULL);
+void cherryleaks_init(void) {
+  global = NULL;
+  PTHREAD_MUTEX_INIT(&global_lock, NULL);
 }
-void cherryleaks_exit (void) {
-    C_MEM_END_PRINT_ALL;
-    PTHREAD_MUTEX_EXIT(&global_lock);
+void cherryleaks_exit(void) {
+  C_MEM_END_PRINT_ALL;
+  PTHREAD_MUTEX_EXIT(&global_lock);
 }
 
 #endif /* __GNUC__ || __clang__ */
@@ -43,9 +43,9 @@ void *gen_sys_realloc_unix(void *pointer, size_t n) {
 }
 
 void *gen_sys_calloc_unix(size_t amount, size_t n) {
-    system_calloc = dlsym(RTLD_NEXT, "calloc");
-    assert(system_calloc);
-    return system_calloc(amount, n);
+  system_calloc = dlsym(RTLD_NEXT, "calloc");
+  assert(system_calloc);
+  return system_calloc(amount, n);
 }
 
 void gen_sys_free_unix(void *pointer) {
@@ -59,12 +59,12 @@ void *memory_data_malloc(size_t amount, char *file, size_t line) {
 
   void *alloc_addr = NULL;
   alloc_addr = SYS_MALLOC(amount);
-    pthread_mutex_lock(&global_lock);
+  pthread_mutex_lock(&global_lock);
   assert(alloc_addr);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, MALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
-    pthread_mutex_unlock(&global_lock);
+  pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
@@ -74,26 +74,32 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
   Rame *temp = global;
   assert(temp);
   alloc_addr = SYS_REALLOC(ptr, amount);
-    pthread_mutex_lock(&global_lock);
+  pthread_mutex_lock(&global_lock);
   /**
    * Reallocation has three case scenarios[&]:
    *
    * 1. If there is not enough memory, the old memory block is not freed and
    * null pointer is returned.
    *
-   * 2. Expanding or contracting the existing area pointed to by ptr, if possible.
-   * The contents of the area remain unchanged up to the lesser of the new and old
-   * sizes. If the area is expanded, the contents of the new part of the array are undefined.
+   * 2. Expanding or contracting the existing area pointed to by ptr, if
+   * possible. The contents of the area remain unchanged up to the lesser of the
+   * new and old sizes. If the area is expanded, the contents of the new part of
+   * the array are undefined.
    *
-   * 3. Allocating a new memory block of size new_size bytes, copying memory area with
-   * size equal the lesser of the new and the old sizes, and freeing the old block.
+   * 3. Allocating a new memory block of size new_size bytes, copying memory
+   * area with size equal the lesser of the new and the old sizes, and freeing
+   * the old block.
    *
    * [&] https://en.cppreference.com/w/c/memory/realloc
    * */
   /* CASE 1 */
-  if(alloc_addr == NULL) return alloc_addr;
+  if (alloc_addr == NULL) {
+    pthread_mutex_unlock(&global_lock);
+    return alloc_addr;
+  }
   /* CASE 2 */
-  if(alloc_addr == ptr) goto expand_old;
+  if (alloc_addr == ptr)
+    goto expand_old;
   /* CASE 3 */
   c_mem_entity new_block = create_block();
   block_value(&new_block, alloc_addr, amount, file, line, REALLOACTED);
@@ -101,40 +107,42 @@ void *memory_data_realloc(void *ptr, size_t amount, char *file, size_t line) {
   temp = global;
   Rame *prev;
   for (temp; temp; temp = temp->next) {
-      buffer = ((c_mem_entity *) temp->data);
-      if (buffer->address == ptr){
-          prev->next = temp->next;
-          SYS_FREE(temp->data);
-          SYS_FREE(temp);
-          return alloc_addr;
-      }
-      prev = temp;
+    buffer = ((c_mem_entity *)temp->data);
+    if (buffer->address == ptr) {
+      prev->next = temp->next;
+      pthread_mutex_unlock(&global_lock);
+      SYS_FREE(temp->data);
+      SYS_FREE(temp);
+      return alloc_addr;
+    }
+    prev = temp;
   }
 
-  expand_old:
-      for (temp; temp; temp = temp->next) {
-        buffer = ((c_mem_entity *)temp->data);
-        if (buffer->address == alloc_addr) {
-          block_value(buffer, alloc_addr, amount, file, line, REALLOACTED);
-          return alloc_addr;
-        }
-      }
-    pthread_mutex_unlock(&global_lock);
+expand_old:
+  for (temp; temp; temp = temp->next) {
+    buffer = ((c_mem_entity *)temp->data);
+    if (buffer->address == alloc_addr) {
+      block_value(buffer, alloc_addr, amount, file, line, REALLOACTED);
+      pthread_mutex_unlock(&global_lock);
+      return alloc_addr;
+    }
+  }
+  pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
 void *memory_data_calloc(size_t amount, size_t size, char *file, size_t line) {
   void *alloc_addr = SYS_CALLOC(amount, size);
-    pthread_mutex_lock(&global_lock);
+  pthread_mutex_lock(&global_lock);
   c_mem_entity block = create_block();
   block_value(&block, alloc_addr, amount, file, line, CALLOCATED);
   grow_cherry_at_beginning(&global, (void *)&block, sizeof(block));
-    pthread_mutex_unlock(&global_lock);
+  pthread_mutex_unlock(&global_lock);
   return alloc_addr;
 }
 
 void memory_data_free(void *ptr, char *file, size_t line) {
-    //TODO: make free multithreadsafe
+  // TODO: make free multithreadsafe
   c_mem_entity *buffer;
   Rame *temp = global;
   assert(temp);
@@ -142,7 +150,6 @@ void memory_data_free(void *ptr, char *file, size_t line) {
     buffer = ((c_mem_entity *)temp->data);
     if (buffer->address == ptr && buffer->alloc_type != FREED) {
       block_value(buffer, ptr, C_MEM_BLOCK_SIZE_INIT, file, line, FREED);
-
       SYS_FREE(ptr);
       break;
     }

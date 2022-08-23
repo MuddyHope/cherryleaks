@@ -20,29 +20,28 @@ extern "C" {
 #endif
 
 #include <assert.h>
+#include <pthread.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
 
 /** Initialization */
 #if defined(__GNUC__) || defined(__clang__)
 
-void cherryleaks_init(void) __attribute__ ((constructor(1)));
+void cherryleaks_init(void) __attribute__((constructor(1)));
 
-void cherryleaks_exit(void) __attribute__ ((destructor(1)));
+void cherryleaks_exit(void) __attribute__((destructor(1)));
 
 #endif /* __GNUC__ || __clang__ */
 
 #define PTHREAD_MUTEX_INIT(mutex, mutexattr)                                   \
-    printf("init: %d\n", pthread_mutex_init(mutex, mutexattr));                                      \
+  assert(!pthread_mutex_init(mutex, mutexattr));
 
-#define PTHREAD_MUTEX_EXIT(mutex)                                    \
-    printf("end: %d\n", pthread_mutex_destroy(mutex));\
+#define PTHREAD_MUTEX_EXIT(mutex) assert(!pthread_mutex_destroy(mutex));
 
-#if  defined(__MACH__) || defined(__linux__)
+#if defined(__MACH__) || defined(__linux__)
 #include <dlfcn.h>
 
 void *(*system_malloc)(size_t) = NULL;
@@ -59,7 +58,7 @@ void *gen_sys_malloc_unix(size_t);
 
 /* Generating system realloc */
 
-void *gen_sys_realloc_unix(void*, size_t);
+void *gen_sys_realloc_unix(void *, size_t);
 
 /* Generating system calloc */
 
